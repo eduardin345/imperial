@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IMPERIAL - Gerenciar Veículos (CRUD)</title>
+  <link rel="stylesheet" href="css.css"> <!-- MESMO CSS DO SEU SITE -->
+  <link rel="stylesheet" href="crud_styles.css"> <!-- CSS adicional SÓ PARA ESTA PÁGINA CRUD (OPCIONAL) -->
+</head>
+<body>
+
+
+  <header class="site-header">
+    <button class="menu-toggle" id="menu-toggle-button" aria-label="Abrir menu principal" aria-expanded="false" aria-controls="main-menu">
+        <span class="hamburger-icon" aria-hidden="true"><span></span><span></span><span></span></span>
+    </button>
+
+   
+    <nav class="main-navigation" id="main-menu" aria-hidden="true">
+        <button class="menu-close" aria-label="Fechar menu principal">×</button>
+        <ul>
+            <li><a href="index.html">Início</a></li> 
+            <li><a href="#">Fale Conosco</a></li>
+            <li><a href="#">Sobre Nós</a></li>
+            <li><a href="#">Minha Conta</a></li>
+            <li><a href="crud_veiculos.html">Gerenciar Veículos</a></li> 
+        </ul>
+    </nav>
+    <div class="header-right-content">
+        <div class="imperial">IMPERIAL</div>
+      
+    </div>
+    <div class="overlay" aria-hidden="true"></div> <!-- Overlay para o main-menu -->
+  </header>
+ 
+
+  <main class="crud-page-container">
+    <h1>Gerenciamento de Veículos</h1>
+
+    <section id="form-veiculo-section" class="form-card">
+      <h2 id="form-title">Adicionar Novo Veículo</h2>
+      <form id="form-veiculo">
+        <input type="hidden" id="veiculo-id" name="veiculoId"> 
+
+        <div>
+          <label for="modelo">Modelo:</label>
+          <input type="text" id="modelo" name="modelo" required>
+        </div>
+        <div>
+          <label for="marca">Marca:</label>
+          <select id="marca" name="id_marca_fk" required>
+            <option value="">Selecione uma marca...</option>
+           
+          </select>
+        </div>
+        <div>
+          <label for="categoria">Categoria:</label>
+          <select id="categoria" name="id_categoria_fk" required>
+            <option value="">Selecione uma categoria...</option>
+         
+          </select>
+        </div>
+        <div>
+          <label for="ano">Ano:</label>
+          <input type="number" id="ano" name="ano" min="1900" max="2099">
+        </div>
+        <div>
+          <label for="cor">Cor:</label>
+          <input type="text" id="cor" name="cor">
+        </div>
+        <div>
+          <label for="preco">Preço (R$):</label>
+          <input type="number" id="preco" name="preco" step="0.01" min="0">
+        </div>
+        <div>
+          <label for="descricao">Descrição:</label>
+          <textarea id="descricao" name="descricao" rows="4"></textarea>
+        </div>
+        <div>
+            <label for="disponivel">Disponível:</label>
+            <input type="checkbox" id="disponivel" name="disponivel" checked>
+        </div>
+        <div class="form-actions">
+          <button type="submit" id="submit-button">Salvar Veículo</button>
+          <button type="button" id="clear-button" class="button-secondary">Limpar / Cancelar Edição</button>
+        </div>
+      </form>
+    </section>
+
+  
+    <section id="lista-veiculos-section">
+      <h2>Veículos Cadastrados</h2>
+      <div class="table-actions">
+        <input type="text" id="search-veiculo-input" placeholder="Buscar veículo por modelo...">
+      
+      </div>
+      <div class="table-responsive">
+        <table id="tabela-veiculos">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Modelo</th>
+              <th>Marca</th>
+              <th>Categoria</th>
+              <th>Ano</th>
+              <th>Preço</th>
+              <th>Disponível</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="corpo-tabela-veiculos">
+            (<tr>):
+            <tr>
+              <td>1</td>
+              <td>Huracan EVO</td>
+              <td>Lamborghini</td>
+              <td>Esportivo</td>
+              <td>2023</td>
+              <td>R$ 3.500.000,00</td>
+              <td>Sim</td>
+              <td>
+                <button class="edit-btn" data-id="1">✏️ Editar</button>
+                <button class="delete-btn" data-id="1">🗑️ Deletar</button>
+              </td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+      <div id="pagination-controls">
+      
+      </div>
+    </section>
+
+  </main>
+  
+  {/* <footer> <p>© 2024 IMPERIAL. Todos os direitos reservados.</p> </footer> */}
+
+
+  <script src="script.js"></script>           <!-- Script JS principal do site (para o header, menu) -->
+  <script src="crud_script.js"></script>       <!-- NOVO SCRIPT JS SÓ PARA ESTA PÁGINA CRUD -->
+</body>
+</html>

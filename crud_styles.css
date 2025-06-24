@@ -1,0 +1,192 @@
+/* crud_styles.css */
+
+body {
+    background-color: #f4f7f6; /* Um fundo um pouco diferente para a página de admin */
+}
+
+.crud-page-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.crud-page-container h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 2.2em;
+}
+
+.crud-page-container h2 {
+    color: #444;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #eee;
+    font-size: 1.6em;
+}
+
+/* Estilos do Formulário */
+.form-card {
+    background-color: #fdfdfd;
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    margin-bottom: 30px;
+}
+
+#form-veiculo div {
+    margin-bottom: 15px;
+}
+
+#form-veiculo label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: #555;
+    font-size: 0.9em;
+}
+
+#form-veiculo input[type="text"],
+#form-veiculo input[type="number"],
+#form-veiculo input[type="search"], /* Para o input de busca da tabela */
+#form-veiculo select,
+#form-veiculo textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* Importante para o padding não aumentar a largura */
+    font-size: 1em;
+    transition: border-color 0.2s ease-in-out;
+}
+
+#form-veiculo input[type="text"]:focus,
+#form-veiculo input[type="number"]:focus,
+#form-veiculo input[type="search"]:focus,
+#form-veiculo select:focus,
+#form-veiculo textarea:focus {
+    border-color: #007bff; /* Cor de destaque ao focar */
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0,123,255,.25);
+}
+
+#form-veiculo input[type="checkbox"] {
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+
+.form-actions {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.form-actions button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.form-actions button[type="submit"] {
+    background-color: #28a745; /* Verde para salvar */
+    color: white;
+    margin-right: 10px;
+}
+.form-actions button[type="submit"]:hover {
+    background-color: #218838;
+}
+
+.form-actions .button-secondary {
+    background-color: #6c757d; /* Cinza para secundário/cancelar */
+    color: white;
+}
+.form-actions .button-secondary:hover {
+    background-color: #5a6268;
+}
+
+/* Estilos da Tabela de Veículos */
+#lista-veiculos-section .table-actions {
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between; /* Para alinhar busca e futuros botões de ação */
+}
+#search-veiculo-input { /* Reutiliza estilo dos inputs de formulário */
+    width: auto; /* Para não ocupar 100% se houver outros elementos */
+    flex-grow: 1;
+    max-width: 400px;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 1em;
+}
+
+
+.table-responsive {
+    overflow-x: auto; /* Permite scroll horizontal em telas pequenas */
+}
+
+#tabela-veiculos {
+    width: 100%;
+    border-collapse: collapse; /* Remove espaços entre bordas das células */
+    margin-bottom: 20px;
+}
+
+#tabela-veiculos th,
+#tabela-veiculos td {
+    border: 1px solid #ddd;
+    padding: 10px 12px;
+    text-align: left;
+    font-size: 0.9em;
+    vertical-align: middle;
+}
+
+#tabela-veiculos thead th {
+    background-color: #343a40; /* Fundo escuro para o cabeçalho da tabela */
+    color: white;
+    font-weight: bold;
+    position: sticky; /* Opcional: para cabeçalho fixo ao rolar */
+    top: 0;
+    z-index: 10;
+}
+
+#tabela-veiculos tbody tr:nth-child(even) {
+    background-color: #f9f9f9; /* Linhas zebradas */
+}
+
+#tabela-veiculos tbody tr:hover {
+    background-color: #f1f1f1; /* Destaque ao passar o mouse */
+}
+
+#tabela-veiculos .edit-btn,
+#tabela-veiculos .delete-btn {
+    padding: 6px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 5px;
+    font-size: 0.85em;
+    transition: opacity 0.2s ease;
+}
+#tabela-veiculos .edit-btn:hover,
+#tabela-veiculos .delete-btn:hover {
+    opacity: 0.8;
+}
+
+.edit-btn {
+    background-color: #ffc107; /* Amarelo para editar */
+    color: #212529;
+}
+
+.delete-btn {
+    background-color: #dc3545; /* Vermelho para deletar */
+    color: white;
+}

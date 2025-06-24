@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IMPERIAL</title>
+  <link rel="stylesheet" href="css.css">
+</head>
+<body>
+
+  
+    <header class="site-header">
+
+
+
+    <button class="menu-toggle"
+            id="menu-toggle-button"
+            aria-label="Abrir menu principal"
+            aria-expanded="false"
+            aria-controls="main-menu">
+            <span class="hamburger-icon" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+            </span>
+    </button>
+
+    <button id="open-sidebar-btn"
+        class="sidebar-toggle-btn"
+        aria-label="Abrir barra lateral de navegação"
+        aria-expanded="false"
+        aria-controls="my-sidebar">
+        <i class="fa-solid fa-bars"></i> ☰
+    </button>
+
+    <aside id="my-sidebar" class="sidebar" aria-hidden="true">
+        <div class="sidebar-header">
+            <h2>Menu Lateral</h2>
+            <button id="close-sidebar-btn"
+                    class="sidebar-toggle-btn close-btn"
+                    aria-label="Fechar barra lateral de navegação">
+                    <i class="fa-solid fa-x"></i>  <a href="index.html"   >×</a>
+            </button> {/* Fechei o button aqui */}
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li><a href="#">Link 1</a></li>
+                <li><a href="#">Link 2</a></li>
+                <li><a href="#">Opções</a></li>
+                <li><a href="#">Contato</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <nav class="main-navigation" id="main-menu" aria-hidden="true">
+        <button class="menu-close" aria-label="Fechar menu principal">
+            
+        </button>
+        <ul>
+            <li><a href="#">Comprar</a></li>
+            <li><a href="#">Fale Conosco</a></li>
+            <li><a href="#">Sobre Nós</a></li>
+            <li><a href="#">Minha Conta</a></li>
+        </ul>
+    </nav>
+
+
+<!-- Dentro do .header-right-content -->
+<div class="search-container">
+    <button type="button" class="search-button" aria-label="Iniciar busca">
+      
+  🔍
+
+    </button>
+    <input type="search" id="site-search" name="q" placeholder="Buscar..." aria-label="Campo de busca">
+
+</div>
+<img src="" alt="">
+
+
+    <div class="header-right-content">
+        <div class="imperial">IMPERIAL</div>
+    <!-- NOVO: Contêiner para IMPERIAL e Busca -->
+
+       
+    <!-- FIM DO NOVO -->
+
+    <div class="overlay" id="sidebar-overlay" aria-hidden="true"></div> <!-- Adicionei id ao overlay -->
+    <div class="overlay" aria-hidden="true"></div> <!-- Este é o overlay do menu principal, mantido -->
+
+  </header>
+
+ 
+  <section id="modelos">
+    <h2>MODELOS</h2>
+    <div class="modelos-multi-carousel-container">
+        <div class="modelos-multi-carousel-track">
+            <!-- As imagens individuais dos modelos são listadas aqui.
+                 O JavaScript vai cloná-las e agrupá-las para o efeito de loop. -->
+            <div class="modelo-item-original">
+                <img src="img/jetta.webp" alt="Jetta">
+                <p class="modelo-nome">JETTA</p>
+            </div>
+            <div class="modelo-item-original">
+                <img src="img/corola do novo.jpg" alt="Nivus">
+                <p class="modelo-nome">COROLLA</p>
+            </div>
+            <div class="modelo-item-original">
+                <img src="img/ford-everest.webp" alt="T-Cross">
+                <p class="modelo-nome">EVEREST</p>
+            </div>
+            <div class="modelo-item-original">
+                <img src="img/civic g10.jpg" alt="Taos">
+                <p class="modelo-nome">CIVIC G10</p>
+            </div>
+            <div class="modelo-item-original">
+                <img src="img/mini cooper s.jpg" alt="Virtus"> <!-- Exemplo de 5ª imagem -->
+                <p class="modelo-nome">MINI COOPER S</p>
+            </div>
+            <div class="modelo-item-original">
+                <img src="img/haval.jpg" alt="Polo">   <!-- Exemplo de 6ª imagem -->
+                <p class="modelo-nome">HAVAL</p>
+            </div>
+            <!-- Adicione todos os seus modelos aqui -->
+        </div>
+
+
+    </div>
+    <!-- Dots não são tão práticos para carrossel de múltiplos itens,
+         mas podem ser adaptados se você realmente quiser. Por ora, vamos omiti-los
+         para simplificar. -->
+</section>
+
+<section id="sua-viagem">
+  <h2>SUA VIAGEM COMEÇA AQUI</h2>
+ <!-- {/* Adicionamos a classe "sub-navigation" e data-category aos LIs */}-->
+ <!-- {/* Adicionamos o span para a linha destacada */}-->
+  <nav class="sub-navigation">
+    <ul>
+      <li data-category="suvs"><a href="#">SUVs</a></li>
+      <li data-category="picape"><a href="#">Picape</a></li>
+      <li data-category="esportivos" class="active"><a href="#">ESPORTIVOS</a></li>
+      <li data-category="carros"><a href="#">Carros</a></li>
+    </ul>
+    <span class="underline-highlighter"></span> <!--{/* NOSSA LINHA ANIMADA */}-->
+  </nav>
+  <div class="viagem-grid">
+ <!---   {/* --- ITENS PARA ESPORTIVOS (VISÍVEL POR PADRÃO) --- */}-->
+    <div class="viagem-item item-content" data-category="esportivos">
+ <!----     {/* Conteúdo para Esportivo 1 - Use imagens reais */}-->
+      <img src="img/lambo.webp" alt="Esportivo 1">
+      <p>Lamborghini Huracan</p>
+    </div>
+    <div class="viagem-item item-content" data-category="esportivos">
+    <!----  {/* Conteúdo para Esportivo 2 */}-->
+      <img src="img/bmw m4.webp" alt="Esportivo 2">
+      <p>BMW M4</p>
+    </div>
+
+   <!---- {/* --- ITENS PARA SUVS (ESCONDIDO INICIALMENTE) --- */}-->
+    <div class="viagem-item item-content" data-category="suvs" style="display:none;">
+     <!---- {/* Conteúdo para SUV 1 */}-->
+      <img src="img/bmw x7.webp" alt="SUV 1">
+      <p>BMW X7</p>
+    </div>
+    <div class="viagem-item item-content" data-category="suvs" style="display:none;">
+    <!----  {/* Conteúdo para SUV 2 */}-->
+      <img src="img/GLE COUPE.webp" alt="SUV 2">
+      <p>GLE COUPE</p>
+    </div>
+
+<!--{/* --- ITENS PARA PICAPES (ESCONDIDO INICIALMENTE) */}-->
+    <div class="viagem-item item-content" data-category="picape" style="display:none;">
+      <!--{/* Conteúdo para Picape 1 */}-->
+      <img src="img/Ford_F-150_Raptor.webp" alt="Picape 1">
+      <p>FORD RAPTOR F-150</p>
+    </div>
+     <div class="viagem-item item-content" data-category="picape" style="display:none;">
+      <!--{/* Conteúdo para Picape 2 */} -->
+      <img src="img/ram trx.png" alt="Picape 2">
+      <p>RAM TRX</p>
+    </div>
+
+
+   <!-- {/* --- ITENS PARA CARROS (ESCONDIDO INICIALMENTE) --- */}-->
+    <div class="viagem-item item-content" data-category="carros" style="display:none;">
+    <!--  {/* Conteúdo para Carro 1 */}-->
+      <img src="img/corola do novo.jpg" alt="Carro 1">
+      <p>TOYOTA COROLLA</p>
+    </div>
+    <div class="viagem-item item-content" data-category="carros" style="display:none;">
+    <!--  {/* Conteúdo para Carro 1 */}-->
+      <img src="img/jetta.webp" alt="Carro 2">
+      <p>JETTA</p>
+    </div>
+   <!-- {/* Adicione mais itens para cada categoria conforme necessário */}-->
+  </div>
+</section>
+ 
+  <script src="script.js"></script>
+
+</body>
+</html>
