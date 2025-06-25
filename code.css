@@ -1,0 +1,97 @@
+/* login_styles.css */
+
+body.auth-page { /* Pode adicionar essa classe ao body em login.html se quiser um fundo específico */
+    /* background-color: #e9e9e9; */
+}
+
+.auth-page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 80px); /* Altura total da viewport menos a altura do header (ajuste 80px se necessário) */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.auth-form-container {
+    background-color: #ffffff;
+    padding: 30px 40px;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 420px; /* Largura máxima do formulário */
+    text-align: center;
+}
+
+.auth-form-container h1 {
+    font-size: 1.8em;
+    color: #333;
+    margin-bottom: 25px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.9em;
+    color: #555;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 1em;
+    transition: border-color 0.2s ease-in-out;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="email"]:focus,
+.form-group input[type="password"]:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0,123,255,.25);
+}
+
+.auth-button {
+    width: 100%;
+    padding: 12px 20px;
+    background-color: #000; /* Cor principal do seu site */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-top: 10px;
+}
+
+.auth-button:hover {
+    background-color: #333; /* Cor mais escura no hover */
+}
+
+.auth-switch {
+    margin-top: 25px;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.auth-switch a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.auth-switch a:hover {
+    text-decoration: underline;
+}
