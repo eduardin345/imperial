@@ -397,3 +397,5 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- FIM DO CÓDIGO PARA SUBNAVEGAÇÃO ---
 
 });
+
+// --- CÓDIGO PARA SUBNAVEGAÇÃO E GRID DINÂMICO ---

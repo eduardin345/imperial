@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comprar Veículos - IMPERIAL</title>
+  <link rel="stylesheet" href="css.css"> <!-- Seu CSS principal -->
+  <link rel="stylesheet" href="comprar_styles.css"> <!-- NOVO CSS para esta página -->
+</head>
+<body>
+
+  <!-- SEU HEADER (copiado do index.html para manter a consistência) -->
+  <header class="site-header">
+    <button class="menu-toggle" id="menu-toggle-button" aria-label="Abrir menu principal" aria-expanded="false" aria-controls="main-menu">
+      <span class="hamburger-icon" aria-hidden="true"><span></span><span></span><span></span></span>
+    </button>
+    <nav class="main-navigation" id="main-menu" aria-hidden="true">
+        <ul>
+            <li><a href="index.html">Inicio</a></li> <!-- Link atualizado -->
+            <li><a href="minha-conta.html">Minha Conta</a></li>
+        </ul>
+    </nav>
+    <div class="search-container">
+        <button type="button" class="search-button" aria-label="Iniciar busca">🔍</button>
+        <input type="search" id="site-search" name="q" placeholder="Buscar..." aria-label="Campo de busca">
+    </div>
+    <div class="header-right-content">
+        <div class="imperial">IMPERIAL</div>
+    </div>
+    <div class="overlay" aria-hidden="true"></div>
+  </header>
+
+  <main class="comprar-page">
+    <section class="page-hero">
+      <div class="hero-content">
+        <h1>Encontre o Carro dos Seus Sonhos</h1>
+        <p>Explore nosso estoque com os melhores veículos novos e seminovos do mercado.</p>
+      </div>
+    </section>
+
+    <div class="page-layout">
+      <!-- ===== BARRA LATERAL DE FILTROS ===== -->
+      <aside id="filtros-sidebar">
+        <h2>Filtros</h2>
+        <div class="filtro-grupo">
+          <label for="filtro-marca">Marca</label>
+          <select id="filtro-marca" name="marca">
+            <option value="todas">Todas as Marcas</option>
+            <!-- Opções serão preenchidas pelo JavaScript -->
+          </select>
+        </div>
+        <div class="filtro-grupo">
+          <label for="filtro-categoria">Categoria</label>
+          <select id="filtro-categoria" name="categoria">
+            <option value="todas">Todas as Categorias</option>
+             <!-- Opções serão preenchidas pelo JavaScript -->
+          </select>
+        </div>
+        <div class="filtro-grupo">
+          <label for="filtro-condicao">Condição</label>
+          <div class="radio-group">
+            <input type="radio" id="cond-todas" name="condicao" value="todas" checked>
+            <label for="cond-todas">Todas</label>
+            <input type="radio" id="cond-novos" name="condicao" value="novo">
+            <label for="cond-novos">Novos</label>
+            <input type="radio" id="cond-usados" name="condicao" value="usado">
+            <label for="cond-usados">Usados</label>
+          </div>
+        </div>
+        <div class="filtro-grupo">
+          <label for="filtro-preco">Faixa de Preço</label>
+          <input type="range" id="filtro-preco" name="preco" min="50000" max="4000000" step="10000" value="4000000">
+          <span id="preco-valor">Até R$ 4.000.000</span>
+        </div>
+        <button id="limpar-filtros-btn">Limpar Filtros</button>
+      </aside>
+
+      <!-- ===== ÁREA DE RESULTADOS DOS VEÍCULOS ===== -->
+      <section id="resultados-veiculos">
+        <div class="sorting-bar">
+          <span id="resultados-contagem"></span>
+          <div class="sort-controls">
+            <label for="ordenar-por">Ordenar por:</label>
+            <select id="ordenar-por" name="ordenar">
+              <option value="relevancia">Relevância</option>
+              <option value="preco-menor">Menor Preço</option>
+              <option value="preco-maior">Maior Preço</option>
+              <option value="ano-novo">Mais Novos</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="veiculos-grid" class="grid">
+          <!-- Os cards dos veículos serão inseridos aqui pelo JavaScript -->
+        </div>
+
+        <div class="load-more-container">
+          <button id="load-more-btn" style="display: none;">Carregar Mais Veículos</button>
+        </div>
+      </section>
+    </div>
+  </main>
+  
+  <script src="script.js"></script> <!-- Seu script principal para o header -->
+  <script src="comprar.js"></script> <!-- NOVO script para a funcionalidade da página -->
+</body>
+</html>
