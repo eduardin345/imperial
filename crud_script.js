@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // A melhor abordagem seria o backend fazer a filtragem
             // Vamos usar o endpoint de categoria que já existe como exemplo:
             // Troque 'esportivos' pela categoria desejada ou um endpoint que liste todos
-            const response = await fetch(`${apiUrlBase}/veiculos/categoria/esportivos`); // PEGANDO SÓ ESPORTIVOS POR ENQUANTO
+            const response = await fetch(`${apiUrlBase}/veiculos`); // Carrega todos os veículos // PEGANDO SÓ ESPORTIVOS POR ENQUANTO
             if (!response.ok && response.status !== 404) throw new Error(`Erro HTTP: ${response.status}`);
             
             const veiculos = response.status === 404 ? [] : await response.json();

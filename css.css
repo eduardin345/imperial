@@ -906,49 +906,58 @@ body.sidebar-is-open .site-content {
 
 /* === INÍCIO: Estilos para padronizar os cards de veículos === */
 
-/* O container da grade já usa flex e gap, o que é ótimo para o espaçamento */
 .viagem-grid {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 25px; /* Define o espaçamento (margem) igual entre todos os itens */
-  margin-top: 20px;
+    /* Mantém a grade flexível e centralizada */
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 25px; 
+    margin-top: 20px;
 }
 
-/* 1. Define um tamanho fixo e estilo para o "card" inteiro */
+/* 1. Ajuste do card para um tamanho maior e mais consistente */
 .viagem-item.item-content {
-  width: 320px;       /* Largura fixa para todos os cards */
-  height: 380px;      /* Altura fixa para todos os cards */
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  overflow: hidden; /* Garante que a imagem com cantos arredondados não "vaze" */
-  display: flex; /* Usamos flex para organizar a imagem e o texto */
-  flex-direction: column; /* Empilha a imagem em cima do texto */
-  text-align: center;
+    width: 350px;       /* Largura do card */
+    height: 420px;      /* Altura total do card */
+    background-color: #f9f9f9; /* Fundo do CARD */
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    overflow: hidden; 
+    display: flex; 
+    flex-direction: column; 
+    text-align: center;
+    transition: transform 0.2s ease-in-out; 
 }
 
-/* 2. Controla a imagem dentro do card */
+.viagem-item.item-content:hover {
+    transform: translateY(-5px); /* Efeito de elevação */
+}
+
+/* 2. Ajuste da imagem para aparecer por inteiro (mantendo contain) */
 .viagem-item.item-content img {
-  width: 100%;       /* A imagem ocupa 100% da largura do card */
-  height: 300px;     /* Altura fixa para a área da imagem */
-  object-fit: cover; /* ESSENCIAL: Redimensiona a imagem para cobrir a área,
-                         mantendo a proporção e cortando o excesso.
-                         Isso evita distorções. */
-  display: block; /* Remove espaços extras indesejados */
+    width: 100%;       
+    height: 350px;     /* Altura da área designada para a imagem dentro do card */
+    display: block;
+
+    /* A PROPRIEDADE PARA MANTER A IMAGEM INTEIRA: */
+    object-fit: contain; 
+
+    /* A SOLUÇÃO PARA REMOVER O FUNDO PRETO: */
+    background-color: #f9f9f9; /* <- AGORA O FUNDO É IGUAL AO FUNDO DO CARD */
+                               /* Assim, os espaços vazios se "camuflam" no card. */
 }
 
-/* 3. Estiliza o parágrafo com o nome do veículo */
+/* Estilo para o parágrafo com o nome do veículo (pode manter o original) */
 .viagem-item.item-content p {
-  font-weight: bold;
-  font-size: 1.1em;
-  color: #333;
-  padding: 15px 10px; /* Espaçamento interno para o texto não ficar colado nas bordas */
-  margin: 0; /* Reseta qualquer margem padrão do parágrafo */
-  flex-grow: 1; /* Faz esta área ocupar o espaço restante na altura do card */
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #333;
+    padding: 15px 10px; 
+    margin: 0; 
+    flex-grow: 1; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 
