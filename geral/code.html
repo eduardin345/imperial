@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IMPERIAL - Login / Criar Conta</title>
+  <link rel="stylesheet" href="css/css.css"> <!-- CSS Principal -->
+  <link rel="stylesheet" href="css/code.css"> <!-- NOVO CSS para esta página -->
+</head>
+<body>
+
+ <!-- {/* ==== HEADER IGUAL AO DO INDEX.HTML (Manter consistência) ==== */} -->
+  <header class="site-header">
+    <button class="menu-toggle" id="menu-toggle-button" aria-label="Abrir menu principal" aria-expanded="false" aria-controls="main-menu">
+        <span class="hamburger-icon" aria-hidden="true"><span></span><span></span><span></span></span>
+    </button>
+    <nav class="main-navigation" id="main-menu" aria-hidden="true">
+        <button class="menu-close" aria-label="Fechar menu principal">×</button>
+        <ul>
+            <li><a href="index.html">Início</a></li>
+            <li><a href="#">Fale Conosco</a></li>
+            <li><a href="#">Sobre Nós</a></li>
+             <!--{/* AGORA APONTA PARA LOGIN.HTML */}-->
+            <li><a href="crud_veiculos.html">Gerenciar Veículos</a></li>
+        </ul>
+    </nav>
+    <div class="header-right-content">
+        <div class="imperial">IMPERIAL</div>
+        <div class="search-container">
+            <button type="button" class="search-button" aria-label="Iniciar busca">🔍</button>
+            <input type="search" id="site-search" name="q" placeholder="Buscar..." aria-label="Campo de busca">
+        </div>
+    </div>
+    <div class="overlay" aria-hidden="true"></div>
+  </header>
+  <!--{/* ==== FIM DO HEADER ==== */}-->
+
+  <main class="auth-page-container">
+    <div class="auth-form-container">
+
+     <!-- {/* --- FORMULÁRIO DE LOGIN (Visível por padrão) --- */} -->
+      <div id="login-form-section">
+        <h1>Acessar Minha Conta</h1>
+        <form id="login-form">
+          <div class="form-group">
+            <label for="login-email">Email:</label>
+            <input type="email" id="login-email" name="email" required autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label for="login-senha">Senha:</label>
+            <input type="password" id="login-senha" name="senha" required autocomplete="current-password">
+          </div>
+          <button type="submit" class="auth-button">Entrar</button>
+        </form>
+        <p class="auth-switch">Não tem uma conta? <a href="#" id="show-register-link">Crie uma aqui!</a></p>
+        <p><a href="#" id="forgot-password-link">Esqueceu sua senha?</a></p> 
+      </div>
+
+     <!-- {/* --- FORMULÁRIO DE CADASTRO (Escondido por padrão) --- */}-->
+      <div id="register-form-section" style="display: none;">
+        <h1>Criar Nova Conta</h1>
+        <form id="register-form">
+          <div class="form-group">
+            <label for="register-nome">Nome Completo:</label>
+            <input type="text" id="register-nome" name="nomeCompleto" required autocomplete="name">
+          </div>
+          <div class="form-group">
+            <label for="register-email">Email:</label>
+            <input type="email" id="register-email" name="email" required autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label for="register-senha">Senha:</label>
+            <input type="password" id="register-senha" name="senha" required autocomplete="new-password">
+          </div>
+          <div class="form-group">
+            <label for="register-confirma-senha">Confirmar Senha:</label>
+            <input type="password" id="register-confirma-senha" name="confirmaSenha" required autocomplete="new-password">
+          </div>
+          <button type="submit" class="auth-button">Criar Conta</button>
+        </form>
+        <p class="auth-switch">Já tem uma conta? <a href="#" id="show-login-link">Faça login aqui!</a></p>
+      </div>
+
+    </div>
+  </main>
+
+ <!-- {/* ==== FOOTER (SE TIVER, COPIAR DO INDEX.HTML) ==== */}-->
+   <footer> <p>&copy; 2024 IMPERIAL. Todos os direitos reservados.</p> </footer> 
+
+  <script src="js/script.js"></script>           <!-- Script JS principal (para menu e header) -->
+  <script src="js/code.js"></script>       <!-- NOVO SCRIPT JS SÓ PARA ESTA PÁGINA de login/registro -->
+</body>
+</html>

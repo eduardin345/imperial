@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Conta - IMPERIAL</title>
+    <!-- Link para o novo arquivo CSS -->
+    <link rel="stylesheet" href="css/style-conta.css"> 
+</head>
+<body>
+
+    <main class="main-container">
+        <div class="account-container">
+            
+            <!-- Formulário de Login (Visível por padrão) -->
+            <div id="login-form-container">
+                <h2>Acessar Minha Conta</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-email">Email:</label>
+                        <input type="email" id="login-email" name="email" placeholder="seuemail@exemplo.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Senha:</label>
+                        <input type="password" id="login-password" name="password" placeholder="Sua senha" required>
+                    </div>
+                    <button type="submit" class="btn">Entrar</button>
+                </form>
+                <p class="toggle-form-text">
+                    Não tem uma conta? 
+                    <a href="#" id="show-register">Cadastre-se aqui.</a>
+                </p>
+            </div>
+
+            <!-- Formulário de Cadastro (Escondido por padrão) -->
+            <div id="register-form-container" style="display: none;">
+                <h2>Criar Nova Conta</h2>
+                <form id="register-form">
+                    <div class="form-group">
+                        <label for="register-name">Nome Completo:</label>
+                        <input type="text" id="register-name" name="name" placeholder="Seu nome completo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">Email:</label>
+                        <input type="email" id="register-email" name="email" placeholder="seuemail@exemplo.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Crie uma Senha:</label>
+                        <input type="password" id="register-password" name="password" placeholder="Mínimo de 6 caracteres" required>
+                    </div>
+                    <button type="submit" class="btn">Cadastrar</button>
+                </form>
+                <p class="toggle-form-text">
+                    Já tem uma conta? 
+                    <a href="#" id="show-login">Faça o login aqui.</a>
+                </p>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Link para o novo arquivo JavaScript -->
+    <script src="js/script-conta.js"></script> 
+</body>
+</html>

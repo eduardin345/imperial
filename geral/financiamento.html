@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Financiamento - IMPERIAL</title>
+  <link rel="stylesheet" href="css/css.css"> 
+  <link rel="stylesheet" href="css/financiamento.css"> 
+  <!-- NEW: Chart.js library for the dynamic chart -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- ======================================================= -->
+  <!-- ===== COPIE E COLE SEU <header> DO index.html AQUI ===== -->
+  <!-- ======================================================= -->
+  <header class="site-header">
+      <!-- ... SEU HEADER COMPLETO ... -->
+  </header>
+
+  <main class="financiamento-page">
+    <section class="page-hero">
+      <div class="hero-content">
+        <h1>Simule seu Financiamento</h1>
+        <p>Use nossa ferramenta interativa e encontre o plano perfeito para seu próximo carro.</p>
+      </div>
+    </section>
+
+    <div class="simulador-container">
+        <div class="simulador-layout">
+            <!-- Coluna do Formulário -->
+            <div class="form-container">
+                <h2>Parâmetros da Simulação</h2>
+                <form id="form-financiamento">
+                    <!-- UPGRADE: Slider para Valor do Veículo -->
+                    <div class="form-group slider-group">
+                        <label for="valor-veiculo">Valor do Veículo: <strong id="valor-veiculo-display">R$ 100.000</strong></label>
+                        <input type="range" id="valor-veiculo" min="20000" max="1000000" step="1000" value="100000">
+                    </div>
+                     <!-- UPGRADE: Slider para Valor de Entrada -->
+                    <div class="form-group slider-group">
+                        <label for="valor-entrada">Valor de Entrada: <strong id="valor-entrada-display">R$ 20.000</strong></label>
+                        <input type="range" id="valor-entrada" min="0" max="250000" step="1000" value="20000">
+                    </div>
+                    <div class="form-group">
+                        <label for="parcelas">Número de Parcelas</label>
+                        <select id="parcelas">
+                            <option value="12">12 meses</option>
+                            <option value="24">24 meses</option>
+                            <option value="36">36 meses</option>
+                            <option value="48" selected>48 meses</option>
+                            <option value="60">60 meses</option>
+                        </select>
+                    </div>
+                    <!-- NEW: Credit Profile Selection -->
+                    <div class="form-group">
+                        <label>Seu Perfil de Crédito (simulado)</label>
+                        <div class="radio-group">
+                            <input type="radio" id="credito-bom" name="perfil" value="bom" checked>
+                            <label for="credito-bom">Bom</label>
+                            <input type="radio" id="credito-otimo" name="perfil" value="otimo">
+                            <label for="credito-otimo">Ótimo</label>
+                            <input type="radio" id="credito-regular" name="perfil" value="regular">
+                            <label for="credito-regular">Regular</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Coluna dos Resultados -->
+            <div class="resultado-container">
+                <h2>Resultado da Simulação</h2>
+                <div class="resultado-principal">
+                    <p>Parcela Mensal Estimada</p>
+                    <strong id="valor-parcela">R$ 2.295,33</strong>
+                </div>
+                <!-- NEW: Chart Container -->
+                <div class="chart-container">
+                    <canvas id="financing-chart"></canvas>
+                </div>
+                <div class="resultado-detalhes">
+                    <div class="detalhe-item">
+                        <span>Valor Financiado</span>
+                        <strong id="valor-financiado-display">R$ 80.000,00</strong>
+                    </div>
+                     <div class="detalhe-item">
+                        <span>Total de Juros</span>
+                        <strong id="juros-total-display">R$ 30.175,84</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- NEW: "Cars You Can Afford" Section -->
+    <section class="carros-sugeridos" id="carros-sugeridos">
+        <h2>Veículos em nosso estoque com parcelas semelhantes</h2>
+        <div class="veiculos-grid" id="veiculos-sugeridos-grid">
+            <!-- Cards de veículos serão inseridos aqui dinamicamente -->
+            <p class="placeholder">Ajuste os valores da simulação para ver sugestões de veículos.</p>
+        </div>
+    </section>
+  </main>
+
+  <!-- ====================================================== -->
+  <!-- ===== COPIE E COLE SEU <footer> DO index.html AQUI ===== -->
+  <!-- ====================================================== -->
+<footer class="site-footer">
+  <div class="footer-container">
+
+    <!-- Seção 1: Logo e Social -->
+    <div class="footer-col" id="footer-sobre">
+      <h3 class="footer-logo">IMPERIAL</h3>
+      <p>Sua jornada para o carro dos sonhos começa aqui. Qualidade, confiança e as melhores ofertas do mercado.</p>
+      <div class="social-links">
+        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+
+    <!-- Seção 2: Links Rápidos -->
+    <div class="footer-col">
+      <h4>Links Rápidos</h4>
+      <ul>
+        <li><a href="index.html">Início</a></li>
+        <li><a href="comprar.html">Comprar</a></li>
+        <li><a href="venda-carro.html">Venda seu Carro</a></li>
+      </ul>
+    </div>
+
+    <!-- Seção 3: Veículos -->
+  
+
+    <!-- Seção 4: Contato -->
+    <div class="footer-col">
+      <h4>Contato</h4>
+      <ul>
+        <li><i class="fas fa-map-marker-alt"></i> Av. Principal, 123, Sua Cidade</li>
+        <li><i class="fas fa-phone"></i> (11) 99999-8888</li>
+        <li><i class="fas fa-envelope"></i> contato@imperial.com</li>
+      </ul>
+    </div>
+
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2024 IMPERIAL. Todos os direitos reservados.</p>
+  </div>
+</footer>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <script src="js/script.js"></script>
+  <script src="js/financiamento.js"></script> 
+</body>
+</html>
