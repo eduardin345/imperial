@@ -1,27 +1,63 @@
-/* crud_styles.css */
+/*
+   crud_styles.css
+   Estilos aprimorados para a página de gerenciamento de veículos.
+*/
 
-body {
-    background-color: #f4f7f6; /* Um fundo um pouco diferente para a página de admin */
+/* --- VARIÁVEIS GLOBAIS E RESET --- */
+:root {
+    /* Paleta de Cores */
+    --primary-color: #007bff;
+    --success-color: #28a745;
+    --success-hover-color: #218838;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --secondary-color: #6c757d;
+    --secondary-hover-color: #5a6268;
+    --dark-color: #343a40;
+    --text-color: #333;
+    --text-light-color: #555;
+    --border-color: #ccc;
+    --border-light-color: #e0e0e0;
+    --bg-page-color: #f4f7f6;
+    --bg-card-color: #fff;
+    --bg-zebra-color: #f9f9f9;
+    --focus-shadow-color: rgba(0, 123, 255, .25);
+
+    /* Fontes */
+    --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--bg-page-color);
+    color: var(--text-color);
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* --- CONTAINER PRINCIPAL --- */
 .crud-page-container {
     max-width: 1200px;
     margin: 30px auto;
     padding: 20px;
-    background-color: #fff;
+    background-color: var(--bg-card-color);
     border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
 .crud-page-container h1 {
     text-align: center;
-    color: #333;
+    color: var(--text-color);
     margin-bottom: 30px;
     font-size: 2.2em;
 }
 
 .crud-page-container h2 {
-    color: #444;
+    color: var(--text-light-color);
     margin-top: 30px;
     margin-bottom: 15px;
     padding-bottom: 10px;
@@ -29,60 +65,72 @@ body {
     font-size: 1.6em;
 }
 
-/* Estilos do Formulário */
+/* --- ESTILOS DO FORMULÁRIO --- */
 .form-card {
     background-color: #fdfdfd;
     padding: 25px;
     border-radius: 8px;
-    border: 1px solid #e0e0e0;
+    border: 1px solid var(--border-light-color);
     margin-bottom: 30px;
 }
 
-#form-veiculo div {
+#form-veiculo .form-group {
     margin-bottom: 15px;
+}
+
+/* Grid para organizar campos menores em colunas */
+#form-veiculo .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
 }
 
 #form-veiculo label {
     display: block;
     margin-bottom: 6px;
-    font-weight: bold;
-    color: #555;
+    font-weight: 600;
+    color: var(--text-light-color);
     font-size: 0.9em;
 }
 
 #form-veiculo input[type="text"],
 #form-veiculo input[type="number"],
-#form-veiculo input[type="search"], /* Para o input de busca da tabela */
+#form-veiculo input[type="search"],
 #form-veiculo select,
 #form-veiculo textarea {
     width: 100%;
     padding: 10px 12px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border-color);
     border-radius: 5px;
-    box-sizing: border-box; /* Importante para o padding não aumentar a largura */
     font-size: 1em;
-    transition: border-color 0.2s ease-in-out;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-#form-veiculo input[type="text"]:focus,
-#form-veiculo input[type="number"]:focus,
-#form-veiculo input[type="search"]:focus,
-#form-veiculo select:focus,
-#form-veiculo textarea:focus {
-    border-color: #007bff; /* Cor de destaque ao focar */
+/* Foco visível para acessibilidade (navegação por teclado) */
+#form-veiculo input:focus-visible,
+#form-veiculo select:focus-visible,
+#form-veiculo textarea:focus-visible {
+    border-color: var(--primary-color);
     outline: none;
-    box-shadow: 0 0 0 2px rgba(0,123,255,.25);
+    box-shadow: 0 0 0 3px var(--focus-shadow-color);
 }
 
+#form-veiculo .checkbox-group {
+    display: flex;
+    align-items: center;
+}
 #form-veiculo input[type="checkbox"] {
+    width: 1.2em;
+    height: 1.2em;
     margin-right: 8px;
-    vertical-align: middle;
 }
 
 
 .form-actions {
-    margin-top: 20px;
-    text-align: right;
+    margin-top: 25px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
 }
 
 .form-actions button {
@@ -92,78 +140,76 @@ body {
     cursor: pointer;
     font-size: 1em;
     font-weight: bold;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+.form-actions button:active {
+    transform: scale(0.98);
 }
 
 .form-actions button[type="submit"] {
-    background-color: #28a745; /* Verde para salvar */
+    background-color: var(--success-color);
     color: white;
-    margin-right: 10px;
 }
 .form-actions button[type="submit"]:hover {
-    background-color: #218838;
+    background-color: var(--success-hover-color);
+}
+.form-actions button[type="submit"]:disabled {
+    background-color: var(--success-hover-color);
+    opacity: 0.7;
+    cursor: wait;
 }
 
 .form-actions .button-secondary {
-    background-color: #6c757d; /* Cinza para secundário/cancelar */
+    background-color: var(--secondary-color);
     color: white;
 }
 .form-actions .button-secondary:hover {
-    background-color: #5a6268;
+    background-color: var(--secondary-hover-color);
 }
 
-/* Estilos da Tabela de Veículos */
-#lista-veiculos-section .table-actions {
-    margin-bottom: 15px;
-    display: flex;
-    justify-content: space-between; /* Para alinhar busca e futuros botões de ação */
-}
-#search-veiculo-input { /* Reutiliza estilo dos inputs de formulário */
-    width: auto; /* Para não ocupar 100% se houver outros elementos */
-    flex-grow: 1;
+/* --- ESTILOS DA TABELA DE VEÍCULOS --- */
+#search-veiculo-input {
     max-width: 400px;
+    margin-bottom: 15px;
     padding: 10px 12px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border-color);
     border-radius: 5px;
-    box-sizing: border-box;
     font-size: 1em;
 }
 
-
 .table-responsive {
-    overflow-x: auto; /* Permite scroll horizontal em telas pequenas */
+    overflow-x: auto;
 }
 
 #tabela-veiculos {
     width: 100%;
-    border-collapse: collapse; /* Remove espaços entre bordas das células */
+    border-collapse: collapse;
     margin-bottom: 20px;
 }
 
 #tabela-veiculos th,
 #tabela-veiculos td {
-    border: 1px solid #ddd;
-    padding: 10px 12px;
+    border: 1px solid var(--border-light-color);
+    padding: 12px 15px;
     text-align: left;
     font-size: 0.9em;
     vertical-align: middle;
 }
 
 #tabela-veiculos thead th {
-    background-color: #343a40; /* Fundo escuro para o cabeçalho da tabela */
+    background-color: var(--dark-color);
     color: white;
-    font-weight: bold;
-    position: sticky; /* Opcional: para cabeçalho fixo ao rolar */
+    font-weight: 600;
+    position: sticky;
     top: 0;
-    z-index: 10;
 }
 
 #tabela-veiculos tbody tr:nth-child(even) {
-    background-color: #f9f9f9; /* Linhas zebradas */
+    background-color: var(--bg-zebra-color);
 }
 
 #tabela-veiculos tbody tr:hover {
-    background-color: #f1f1f1; /* Destaque ao passar o mouse */
+    background-color: #e9ecef;
 }
 
 #tabela-veiculos .edit-btn,
@@ -173,20 +219,112 @@ body {
     border-radius: 4px;
     cursor: pointer;
     margin-right: 5px;
-    font-size: 0.85em;
+    color: white;
     transition: opacity 0.2s ease;
 }
 #tabela-veiculos .edit-btn:hover,
 #tabela-veiculos .delete-btn:hover {
-    opacity: 0.8;
+    opacity: 0.85;
 }
 
 .edit-btn {
-    background-color: #ffc107; /* Amarelo para editar */
-    color: #212529;
+    background-color: var(--warning-color);
+    color: var(--dark-color);
 }
 
 .delete-btn {
-    background-color: #dc3545; /* Vermelho para deletar */
-    color: white;
+    background-color: var(--danger-color);
+}
+
+/* --- COMPONENTES DINÂMICOS (JS) --- */
+/* Estilos para Notificações (Toast) */
+.notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 500;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transform: translateY(150%);
+    opacity: 0;
+    transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+    z-index: 1000;
+}
+
+.notification.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.notification.success { background-color: var(--success-color); }
+.notification.error { background-color: var(--danger-color); }
+
+/* Estilos para Status na Tabela */
+.status {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 0.8em;
+    color: #fff;
+    text-transform: uppercase;
+}
+.status.disponivel { background-color: var(--success-color); }
+.status.indisponivel { background-color: var(--secondary-color); }
+
+td.error {
+    color: var(--danger-color);
+    font-weight: bold;
+    text-align: center !important;
+}
+
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 768px) {
+    .crud-page-container {
+        margin: 15px;
+        padding: 15px;
+    }
+    .crud-page-container h1 { font-size: 1.8em; }
+    .crud-page-container h2 { font-size: 1.4em; }
+
+    .form-actions {
+        flex-direction: column;
+    }
+    .form-actions button {
+        width: 100%;
+    }
+}
+
+
+/* --- Estilos para Busca Avançada --- */
+.search-filters-container {
+    display: flex;
+    flex-wrap: wrap; /* Permite que os itens quebrem para a linha de baixo em telas pequenas */
+    gap: 10px; /* Espaçamento entre os campos */
+    padding: 15px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.search-filters-container input,
+.search-filters-container select {
+    flex: 1 1 180px; /* Flex-grow, flex-shrink, flex-basis */
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 0.9em;
+}
+
+.search-filters-container button {
+    flex-basis: 150px; /* Largura base do botão */
+    padding: 8px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
 }

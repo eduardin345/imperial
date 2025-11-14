@@ -16,6 +16,7 @@
   {
     "id": 2,
     "modelo": "COROLLA ALTIS HYBRID",
+    "marca": "Toyota",
     "imagem": "img/corola do novo.jpg",
     "categoria": "carros",
     "destaque_modelo": true,
@@ -29,6 +30,7 @@
   {
     "id": 3,
     "modelo": "FORD EVEREST",
+    "marca": "Ford",
     "imagem": "img/ford-everest.webp",
     "categoria": "suvs",
     "destaque_modelo": true,
@@ -42,6 +44,7 @@
   {
     "id": 4,
     "modelo": "CIVIC G10 TOURING",
+    "marca": "Honda",
     "imagem": "img/civic g10.jpg",
     "categoria": "carros",
     "destaque_modelo": true,
@@ -55,6 +58,7 @@
   {
     "id": 5,
     "modelo": "MINI COOPER S",
+    "marca": "Mini",
     "imagem": "img/mini cooper s.jpg",
     "categoria": "esportivos",
     "destaque_modelo": true,
@@ -68,6 +72,7 @@
   {
     "id": 6,
     "modelo": "GWM HAVAL H6 PHEV",
+    "marca": "GWM",
     "imagem": "img/haval.jpg",
     "categoria": "suvs",
     "destaque_modelo": true,
@@ -81,6 +86,7 @@
   {
     "id": 7,
     "modelo": "Lamborghini Huracan",
+    "marca": "Lamborghini",
     "imagem": "img/lambo.webp",
     "categoria": "esportivos",
     "destaque_modelo": false,
@@ -94,6 +100,7 @@
   {
     "id": 8,
     "modelo": "BMW M4 COMPETITION",
+    "marca": "BMW",
     "imagem": "img/bmw m4.webp",
     "categoria": "esportivos",
     "destaque_modelo": false,
@@ -107,6 +114,7 @@
   {
     "id": 9,
     "modelo": "BMW X7 M60i",
+    "marca": "BMW",
     "imagem": "img/bmw x7.webp",
     "categoria": "suvs",
     "destaque_modelo": false,
@@ -120,6 +128,7 @@
   {
     "id": 10,
     "modelo": "MERCEDES-BENZ GLE COUPE",
+    "marca": "Mercedes",
     "imagem": "img/GLE COUPE.webp",
     "categoria": "suvs",
     "destaque_modelo": false,
@@ -133,6 +142,7 @@
   {
     "id": 11,
     "modelo": "FORD F-150 RAPTOR",
+    "marca": "Ford",
     "imagem": "img/Ford_F-150_Raptor.webp",
     "categoria": "picape",
     "destaque_modelo": false,
@@ -146,6 +156,7 @@
   {
     "id": 12,
     "modelo": "RAM 1500 TRX",
+    "marca": "Ram",
     "imagem": "img/ram trx.png",
     "categoria": "picape",
     "destaque_modelo": false,
