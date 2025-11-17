@@ -78,21 +78,28 @@ document.addEventListener('DOMContentLoaded', () => {
         renderVeiculos();
     };
     
-    const popularFiltros = () => {
-        const marcas = [...new Set(veiculosData.map(v => v.marca))];
-        marcas.sort().forEach(marca => filtroMarca.add(new Option(marca, marca)));
+   // VERSÃO CORRIGIDA
+const popularFiltros = () => {
+    // Mapeia e remove marcas nulas/vazias, depois cria um conjunto de valores únicos.
+    const marcas = [...new Set(veiculosData.map(v => v.marca).filter(Boolean))];
+    marcas.sort().forEach(marca => {
+        if (marca) filtroMarca.add(new Option(marca, marca));
+    });
 
-        const categorias = [...new Set(veiculosData.map(v => v.categoria))];
-        categorias.sort().forEach(cat => {
-            // Transforma 'sedans' em 'Sedans' para exibição
+    // Mapeia e remove categorias nulas/vazias.
+    const categorias = [...new Set(veiculosData.map(v => v.categoria).filter(Boolean))];
+    categorias.sort().forEach(cat => {
+        // Se 'cat' não for nulo ou vazio, cria a opção
+        if (cat) {
             const nomeExibicao = cat.charAt(0).toUpperCase() + cat.slice(1);
             filtroCategoria.add(new Option(nomeExibicao, cat));
-        });
-    };
+        }
+    });
+};
 
     async function iniciarPagina() {
         try {
-            const response = await fetch('http://localhost:3002/api/veiculos');
+            const response = await fetch('http://localhost:3001/api/veiculos');
             if (!response.ok) throw new Error(`Falha na API`);
             
             veiculosData = await response.json();

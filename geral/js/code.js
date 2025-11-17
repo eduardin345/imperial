@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('login-form');
     const registerForm = document.getElementById('register-form');
     
-    const apiUrlBase = 'http://localhost:3002/api'; // VERIFIQUE SUA PORTA E URL DA API
+    const apiUrlBase = 'http://localhost:3001/api'; // VERIFIQUE SUA PORTA E URL DA API
 
     // --- LÓGICA PARA ALTERNAR ENTRE FORMULÁRIOS ---
     if (showRegisterLink) {

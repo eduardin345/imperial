@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             // Busca os veículos da sua API para a seção de sugestões
-            const response = await fetch('http://localhost:3002/api/veiculos');
+            const response = await fetch('http://localhost:3001/api/veiculos');
             if (!response.ok) throw new Error("Não foi possível buscar o estoque de veículos.");
             todosOsVeiculos = await response.json();
             

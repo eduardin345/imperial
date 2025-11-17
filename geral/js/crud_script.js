@@ -1,7 +1,7 @@
 // js/crud_script.js
 document.addEventListener('DOMContentLoaded', () => {
     // --- CONFIGURAÇÃO E CONSTANTES ---
-    const API_BASE_URL = 'http://localhost:3002/api';
+    const API_BASE_URL = 'http://localhost:3001/api';
     const ENDPOINTS = {
         VEICULOS: `${API_BASE_URL}/veiculos`,
         CATEGORIAS: `${API_BASE_URL}/categorias`,
@@ -40,15 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- FUNÇÕES AUXILIARES ---
     function showNotification(message, type = 'success') {
-        const notification = document.createElement('div');
-        notification.className = `notification ${type}`;
-        notification.textContent = message;
-        document.body.appendChild(notification);
-        setTimeout(() => notification.classList.add('show'), 10);
-        setTimeout(() => {
-            notification.classList.remove('show');
-            notification.addEventListener('transitionend', () => notification.remove());
-        }, 3000);
+        alert(`${type === 'success' ? '✅' : '❌'} ${message}`);
     }
 
     async function apiFetch(url, options = {}) {
@@ -148,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             showNotification(`Veículo ${isEditing ? 'atualizado' : 'criado'} com sucesso!`);
             resetarFormulario();
-            await carregarVeiculos();
+            await carregarVeiculos(); // Recarrega a lista
         } catch (error) {
             showNotification(`Falha: ${error.message}`, 'error');
         } finally {
@@ -221,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             await apiFetch(`${ENDPOINTS.VEICULOS}/${id}`, { method: 'DELETE' });
             showNotification(`Veículo "${modelo}" deletado com sucesso!`);
-            await carregarVeiculos();
+            await carregarVeiculos(); // Recarrega a lista
             resetarFormulario();
         } catch (error) {
             showNotification(`Falha ao deletar: ${error.message}`, 'error');
@@ -243,11 +235,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const anoMatch = !anoTerm || (v.ano && v.ano.toString().includes(anoTerm));
             
             let disponivelMatch = true;
-            if (disponivelTerm === "sim") {
-                disponivelMatch = v.disponivel === true;
-            } else if (disponivelTerm === "nao") {
-                disponivelMatch = v.disponivel === false;
-            }
+            if (disponivelTerm === "sim") disponivelMatch = v.disponivel === 1; // MySQL usa 1 para true
+            else if (disponivelTerm === "nao") disponivelMatch = v.disponivel === 0; // e 0 para false
 
             return idMatch && modeloMatch && marcaMatch && anoMatch && disponivelMatch;
         });
@@ -255,12 +244,10 @@ document.addEventListener('DOMContentLoaded', () => {
         renderizarTabela(veiculosFiltrados);
     }
     
-    // Adiciona um único listener para reagir a qualquer alteração nos filtros
     if (searchFiltersContainer) {
         searchFiltersContainer.addEventListener('input', filtrarVeiculos);
     }
 
-    // Listener para o botão de limpar filtros
     if (clearFiltersBtn) {
         clearFiltersBtn.addEventListener('click', () => {
             searchIdInput.value = '';
@@ -268,10 +255,9 @@ document.addEventListener('DOMContentLoaded', () => {
             searchMarcaInput.value = '';
             searchAnoInput.value = '';
             searchDisponivelSelect.value = '';
-            filtrarVeiculos(); // Re-renderiza a tabela com a lista completa
+            filtrarVeiculos();
         });
     }
-
 
     // --- INICIALIZAÇÃO DA PÁGINA ---
     async function init() {

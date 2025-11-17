@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // --- 4. FUNÇÃO PARA BUSCAR MARCAS NA API ---
     async function populateMarcas() {
         try {
-            const response = await fetch('http://localhost:3002/api/marcas');
+            const response = await fetch('http://localhost:3001/api/marcas');
             if (!response.ok) throw new Error('Falha ao buscar marcas.');
             const marcas = await response.json();
             
