@@ -58,8 +58,6 @@ CREATE TABLE `imagens_veiculos` (
 );
 
 
--- DADOS DE EXEMPLO PARA TESTES --
--- Inserir alguns dados ajuda a verificar se a estrutura está correta e facilita os testes iniciais do site.
 
 INSERT INTO `marcas` (`nome`) VALUES ('Lamborghini'), ('BMW'), ('Ford');
 INSERT INTO `categorias` (`nome`, `url_amigavel`) VALUES ('Esportivos', 'esportivos'), ('SUVs', 'suvs');
@@ -68,3 +66,10 @@ INSERT INTO `categorias` (`nome`, `url_amigavel`) VALUES ('Esportivos', 'esporti
 INSERT INTO `veiculos` (`modelo`, `ano`, `condicao`, `preco`, `id_marca_fk`, `id_categoria_fk`) VALUES
 ('Huracan EVO', 2023, 0, 3500000.00, 1, 1),
 ('X6', 2020, 1, 650000.00, 2, 2);
+
+
+ALTER TABLE `veiculos` 
+ADD COLUMN `km` INT UNSIGNED NOT NULL DEFAULT 0,
+ADD COLUMN `motor` VARCHAR(100) NULL,
+ADD COLUMN `cor` VARCHAR(100) NULL,
+ADD COLUMN `descricao` TEXT NULL;
