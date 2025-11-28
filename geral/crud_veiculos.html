@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IMPERIAL - Gerenciar Veículos (CRUD)</title>
-  <link rel="stylesheet" href="css/css.css">
-  <link rel="stylesheet" href="css/crud_styles.css">
+  <title>IMPERIAL - Gerenciar Veículos</title>
+  <link rel="stylesheet" href="css/css.css"> <!-- Seu CSS principal -->
+  <link rel="stylesheet" href="css/crud_styles.css"> <!-- CSS específico do CRUD -->
 </head>
 <body>
 
@@ -14,7 +14,6 @@
         <span class="hamburger-icon" aria-hidden="true"><span></span><span></span><span></span></span>
     </button>
    
-    <!-- MENU DE NAVEGAÇÃO ATUALIZADO -->
     <nav class="main-navigation" id="main-menu" aria-hidden="true">
         <button class="menu-close" aria-label="Fechar menu principal">×</button>
         <ul>
@@ -86,15 +85,6 @@
           <textarea id="descricao" name="descricao" rows="4" placeholder="Detalhes sobre o veículo..."></textarea>
         </div>
 
-        <div class="form-group">
-    <label for="imagem">Imagem Principal do Veículo:</label>
-    <input type="file" id="imagem" name="imagem" accept="image/png, image/jpeg, image/webp">
-    <div class="image-preview-container">
-        <img src="img/placeholder.webp" alt="Preview da Imagem" id="image-preview" class="image-preview">
-        <span id="image-preview-text">Selecione uma imagem</span>
-    </div>
-</div>
-
         <div class="form-group checkbox-group">
             <input type="checkbox" id="disponivel" name="disponivel" checked>
             <label for="disponivel">Disponível para venda</label>
@@ -107,7 +97,6 @@
       </form>
     </section>
 
-    <!-- Seção da lista de veículos com filtros -->
     <section id="lista-veiculos-section">
       <h2>Veículos Cadastrados</h2>
       

@@ -1,145 +1,157 @@
-// financiamento.js (VERSÃO MELHORADA E TOTALMENTE REATIVA)
+// js/financiamento.js (VERSÃO FINAL E CORRIGIDA)
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- SELEÇÃO DOS ELEMENTOS DO DOM ---
+    
     const valorVeiculoSlider = document.getElementById('valor-veiculo');
     const valorEntradaSlider = document.getElementById('valor-entrada');
     const parcelasSelect = document.getElementById('parcelas');
     const perfilRadios = document.querySelectorAll('input[name="perfil"]');
-
-    // Displays de valores
     const valorVeiculoDisplay = document.getElementById('valor-veiculo-display');
     const valorEntradaDisplay = document.getElementById('valor-entrada-display');
     const valorParcelaDisplay = document.getElementById('valor-parcela');
     const valorFinanciadoDisplay = document.getElementById('valor-financiado-display');
     const jurosTotalDisplay = document.getElementById('juros-total-display');
+    const gridSugestoes = document.getElementById('veiculos-sugeridos-grid');
 
-    // --- CONFIGURAÇÃO INICIAL DO GRÁFICO ---
+    // --- CONFIGURAÇÃO DO GRÁFICO (Chart.js) ---
     const ctx = document.getElementById('financing-chart').getContext('2d');
     const financingChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Valor Principal Financiado', 'Total de Juros'],
-            datasets: [{
-                data: [1, 0], // Inicia com valores para não ficar vazio
-                backgroundColor: ['#111', '#ccc'],
-                borderColor: '#fff',
-                borderWidth: 2
-            }]
-        },
-        options: {
-            responsive: true,
-            cutout: '70%',
-            plugins: { legend: { position: 'bottom' } }
-        }
+        type: 'doughnut', data: { labels: ['Valor Principal', 'Total de Juros'], datasets: [{ data: [1, 0], backgroundColor: ['#111', '#ccc'], borderWidth: 2, borderColor: '#fff' }] },
+        options: { responsive: true, cutout: '70%', plugins: { legend: { position: 'bottom' } } }
     });
 
-    // --- LÓGICA PRINCIPAL ---
+    // --- ESTADO E FUNÇÕES AUXILIARES ---
+  const TAXAS_JUROS = { otimo: 0.012, bom: 0.015, regular: 0.019 };
+    let todosOsVeiculos = []; // Array para guardar os carros da API
 
-    // Centralizamos as taxas de juros para fácil manutenção
-    const TAXAS_JUROS = {
-        otimo: 0.012, // 1.2%
-        bom: 0.015,   // 1.5%
-        regular: 0.019 // 1.9%
+    // Função que converte qualquer número para o formato de moeda brasileira (R$)
+    const formatarDinheiro = (valor) => {
+        if (typeof valor !== 'number' || isNaN(valor)) {
+            valor = 0;
+        }
+        return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     };
 
-    /**
-     * Função principal que orquestra o cálculo e a atualização da interface.
-     */
-    function simularFinanciamento() {
-        // 1. Obter todos os valores dos inputs
-        const valorVeiculo = parseFloat(valorVeiculoSlider.value);
-        let valorEntrada = parseFloat(valorEntradaSlider.value);
+    // ==========================================================
+    // NOVA LÓGICA PARA ATUALIZAR SUGESTÕES - INÍCIO
+    // ==========================================================
+    const atualizarCarrosSugeridos = (parcelaOrcamento, valorEntrada) => {
+        gridSugestoes.innerHTML = ''; 
+
         const numParcelas = parseInt(parcelasSelect.value);
-        const perfilCredito = document.querySelector('input[name="perfil"]:checked').value;
+        const taxaJuros = TAXAS_JUROS[document.querySelector('input[name="perfil"]:checked').value];
 
-        // 2. Validação e Lógica de Negócio
-        // Garante que a entrada não seja maior ou igual ao valor do veículo
-        if (valorEntrada >= valorVeiculo) {
-            valorEntrada = valorVeiculo - 1; // Ajusta para um valor mínimo de financiamento
-            valorEntradaSlider.value = valorEntrada;
+        // 1. CALCULA O MÁXIMO FINANCIÁVEL com base na parcela simulada (fórmula de Valor Presente)
+        const i = taxaJuros;
+        const n = numParcelas;
+        const maximoFinanciavel = parcelaOrcamento > 0 ? (parcelaOrcamento * (Math.pow(1 + i, n) - 1)) / (i * Math.pow(1 + i, n)) : 0;
+        
+        // 2. CALCULA O PREÇO MÁXIMO do carro que o usuário pode pagar
+        const precoTotalMaximo = maximoFinanciavel + valorEntrada;
+
+        // 3. FILTRA os carros do estoque que são mais baratos ou iguais ao preço máximo
+        const carrosFiltrados = todosOsVeiculos.filter(veiculo => veiculo.preco <= precoTotalMaximo);
+        
+        // 4. ORDENA para mostrar os mais caros (e mais próximos do orçamento) primeiro
+        carrosFiltrados.sort((a, b) => b.preco - a.preco);
+
+        // Limita a exibição aos 3 carros mais relevantes
+        const carrosParaExibir = carrosFiltrados.slice(0, 3);
+
+        if (carrosParaExibir.length === 0) {
+            gridSugestoes.innerHTML = `<p class="placeholder">Nenhum veículo no estoque se encaixa nesse orçamento. Tente aumentar o valor de entrada ou a simulação.</p>`;
+            return;
         }
-        
-        const valorFinanciado = valorVeiculo - valorEntrada;
-        const taxaJurosMensal = TAXAS_JUROS[perfilCredito];
-        
-        // 3. Realizar os Cálculos
-        let valorParcela, jurosTotais;
 
-        if (valorFinanciado <= 0) {
-            // Se não há valor a financiar, tudo é zero.
-            valorParcela = 0;
-            jurosTotais = 0;
-        } else {
-            // Aplica a fórmula da Tabela PRICE
-            const i = taxaJurosMensal;
-            const n = numParcelas;
-            const P = valorFinanciado;
-            
-            valorParcela = P * (i * Math.pow(1 + i, n)) / (Math.pow(1 + i, n) - 1);
-            jurosTotais = (valorParcela * n) - P;
-        }
-        
-        // 4. Atualizar a Interface do Usuário (UI)
-        atualizarUI(valorVeiculo, valorEntrada, valorFinanciado, valorParcela, jurosTotais);
-    }
+        // 5. RENDERIZA os cards com a mesma estrutura da página "Comprar"
+        carrosParaExibir.forEach(v => {
+            const card = document.createElement('div');
+            card.className = 'veiculo-card'; // Classe principal para o estilo
 
-    /**
-     * Atualiza todos os elementos de texto e o gráfico na tela.
-     */
-    function atualizarUI(veiculo, entrada, financiado, parcela, juros) {
-        const formatarDinheiro = (valor) => valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            const nomeCompleto = `${v.nome_marca} ${v.modelo}`;
+            const imageUrl = v.imagem_url || 'img/placeholder.webp';
 
-        valorVeiculoDisplay.textContent = formatarDinheiro(veiculo);
-        valorEntradaDisplay.textContent = formatarDinheiro(entrada);
-        valorFinanciadoDisplay.textContent = formatarDinheiro(financiado);
-        valorParcelaDisplay.textContent = formatarDinheiro(parcela);
-        jurosTotalDisplay.textContent = formatarDinheiro(juros > 0 ? juros : 0);
-
-        // Atualiza os dados do gráfico
-        const dadosGrafico = [
-            financiado > 0 ? financiado : 0,
-            juros > 0 ? juros : 0
-        ];
-        // Se ambos forem 0, o gráfico mostrará um círculo completo de "Principal" para evitar ficar vazio.
-        if (financiado <= 0 && juros <= 0) {
-            dadosGrafico[0] = 1; 
-        }
-        financingChart.data.datasets[0].data = dadosGrafico;
-        financingChart.update();
-        
-        // Sugere carros com base na nova parcela calculada
-        atualizarCarrosSugeridos(parcela);
-    }
-    
-    // A função de sugestão de carros permanece a mesma, mas agora é chamada a cada atualização
-    const atualizarCarrosSugeridos = (parcelaCalculada) => {
-        // ... (seu código de sugestão de carros continua aqui, sem alterações necessárias)
-        // O código que você já tinha aqui é excelente.
+            // HTML IDÊNTICO AO DA PÁGINA 'comprar.js' PARA GARANTIR O MESMO VISUAL
+            card.innerHTML = `
+                <div class="card-imagem">
+                    <img src="${imageUrl}" alt="${nomeCompleto}" onerror="this.src='img/placeholder.webp';">
+                </div>
+                <div class="card-conteudo">
+                    <h3>${nomeCompleto}</h3>
+                    <p class="card-preco">${formatarDinheiro(v.preco)}</p>
+                    <ul class="card-specs">
+                        <li>Ano: ${v.ano}</li>
+                    </ul>
+                    <a href="#" class="card-botao">Ver Detalhes</a>
+                </div>
+            `;
+            gridSugestoes.appendChild(card);
+        });
     };
-    
-    let todosOsVeiculos = []; // Cache para os veículos da API
+    // ==========================================================
+    // NOVA LÓGICA PARA ATUALIZAR SUGESTÕES - FIM
+    // ==========================================================
 
-    // --- INICIALIZAÇÃO DA PÁGINA ---
+// SUBSTITUA SUA FUNÇÃO ANTIGA POR ESTA VERSÃO COMPLETA
+
+function simularFinanciamento() {
+    // 1. LER OS VALORES DOS INPUTS E CONVERTER PARA NÚMEROS
+    const valorVeiculo = parseFloat(valorVeiculoSlider.value);
+    let valorEntrada = parseFloat(valorEntradaSlider.value);
+    const numParcelas = parseInt(parcelasSelect.value);
+    const perfil = document.querySelector('input[name="perfil"]:checked').value;
+    const taxaJuros = TAXAS_JUROS[perfil];
+
+    // 2. VALIDAR E AJUSTAR VALORES
+    // Garante que a entrada não seja maior ou igual ao valor do veículo
+    if (valorEntrada >= valorVeiculo) {
+        valorEntrada = valorVeiculo - 1; // Deixa um valor mínimo para financiar
+        valorEntradaSlider.value = valorEntrada; // Atualiza o slider visualmente
+    }
+    
+    const valorFinanciado = valorVeiculo - valorEntrada;
+    
+    // 3. FAZER OS CÁLCULOS
+    const i = taxaJuros, n = numParcelas, P = valorFinanciado;
+    
+    // Se o valor a financiar for positivo, calcula a parcela. Senão, é zero.
+    const valorParcela = P > 0 ? P * (i * Math.pow(1 + i, n)) / (Math.pow(1 + i, n) - 1) : 0;
+    const jurosTotais = (valorParcela * numParcelas) - P;
+
+    // 4. ATUALIZAR A INTERFACE COM OS VALORES FORMATADOS
+    // (Note que só chamamos formatarDinheiro aqui, no final)
+    valorVeiculoDisplay.textContent = formatarDinheiro(valorVeiculo);
+    valorEntradaDisplay.textContent = formatarDinheiro(valorEntrada);
+    valorFinanciadoDisplay.textContent = formatarDinheiro(valorFinanciado);
+    valorParcelaDisplay.textContent = formatarDinheiro(valorParcela);
+    jurosTotalDisplay.textContent = formatarDinheiro(jurosTotais > 0 ? jurosTotais : 0);
+    
+    // Atualiza o gráfico
+    financingChart.data.datasets[0].data = [P > 0 ? P : 1, jurosTotais > 0 ? jurosTotais : 0];
+    financingChart.update();
+    
+    // Chama a função de sugestão de carros
+    atualizarCarrosSugeridos(valorParcela, valorEntrada);
+}
+    
     async function iniciarPagina() {
-        // Adiciona os "escutadores" de eventos a TODOS os controles do formulário
-        valorVeiculoSlider.addEventListener('input', simularFinanciamento);
-        valorEntradaSlider.addEventListener('input', simularFinanciamento);
-        parcelasSelect.addEventListener('change', simularFinanciamento);
-        perfilRadios.forEach(radio => radio.addEventListener('change', simularFinanciamento));
+        // Adiciona os "escutadores" de eventos
+        [valorVeiculoSlider, valorEntradaSlider, parcelasSelect, ...perfilRadios].forEach(el => {
+            el.addEventListener(el.type === 'radio' ? 'change' : 'input', simularFinanciamento);
+        });
 
         try {
-            // Busca os veículos da sua API para a seção de sugestões
-            const response = await fetch('http://localhost:3001/api/veiculos');
-            if (!response.ok) throw new Error("Não foi possível buscar o estoque de veículos.");
+            // **URL da API corrigida para a porta 3002**
+            const response = await fetch('http://localhost:3002/api/veiculos'); 
+            if (!response.ok) throw new Error("Não foi possível carregar o estoque.");
+            
             todosOsVeiculos = await response.json();
             
-            // Faz o primeiro cálculo assim que a página carrega
-            simularFinanciamento();
-
+            simularFinanciamento(); // Realiza a primeira simulação
         } catch(error) {
             console.error("Erro ao carregar dados:", error);
-            document.getElementById('veiculos-sugeridos-grid').innerHTML = `<p class="placeholder">Erro ao carregar sugestões.</p>`;
+            gridSugestoes.innerHTML = `<p class="placeholder">Erro ao carregar sugestões.</p>`;
         }
     }
 

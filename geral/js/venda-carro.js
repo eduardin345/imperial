@@ -84,12 +84,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     // --- 4. FUNÇÃO PARA BUSCAR MARCAS NA API ---
     async function populateMarcas() {
         try {
-            const response = await fetch('http://localhost:3001/api/marcas');
+            const response = await fetch('http://localhost:3002/api/marcas');
             if (!response.ok) throw new Error('Falha ao buscar marcas.');
             const marcas = await response.json();
             
             marcas.forEach(marca => {
-                const option = new Option(marca.nome_marca, marca.nome_marca);
+             const option = new Option(marca.nome, marca.nome);
                 marcaSelect.appendChild(option);
             });
         } catch (error) {

@@ -1,105 +1,155 @@
-// seed.js (VERSÃO FINAL COMPLETA - Importa todos os dados)
-
 import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
 import fs from 'fs/promises';
 
 dotenv.config();
 
-// Funções auxiliares
 function parsePrice(priceString) {
-    if (!priceString || typeof priceString !== 'string') return 0;
+    if (!priceString) return 0;
+    if (typeof priceString === 'number') return priceString;
     return parseFloat(priceString.replace('R$ ', '').replace(/\./g, '').replace(',', '.'));
 }
 
 function parseKm(kmString) {
-    if (!kmString || typeof kmString !== 'string') return 0;
-    return parseInt(kmString.replace(/\D/g, '')); // Remove " KM" e "."
+    if (!kmString) return 0;
+    if (typeof kmString === 'number') return kmString;
+    return parseInt(kmString.replace(/\D/g, ''));
 }
 
 async function seedDatabase() {
     let connection;
     try {
         connection = await mysql.createConnection({
-            host: process.env.DB_HOST, user: process.env.DB_USER,
-            password: process.env.DB_PASSWORD, database: process.env.DB_NAME,
+            host: process.env.DB_HOST || 'localhost',
+            user: process.env.DB_USER || 'root',
+            password: process.env.DB_PASSWORD,
+            database: process.env.DB_NAME || 'imperial_db',
         });
         console.log("✅ Conectado ao banco de dados MySQL.");
 
-        // Limpa as tabelas antes de inserir para evitar duplicatas
-        console.log("\n🧹 Limpando tabelas antigas...");
-        await connection.execute('SET FOREIGN_KEY_CHECKS = 0;');
-        await connection.execute('TRUNCATE TABLE imagens_veiculos;');
-        await connection.execute('TRUNCATE TABLE veiculos;');
-        await connection.execute('TRUNCATE TABLE categorias;');
-        await connection.execute('TRUNCATE TABLE marcas;');
-        await connection.execute('SET FOREIGN_KEY_CHECKS = 1;');
-        console.log("👍 Tabelas limpas.");
+        // ==========================================
+        // 1. LIMPEZA TOTAL (RESET)
+        // ==========================================
+        console.log("🔥 Recriando estrutura do banco de dados...");
+        await connection.query('SET FOREIGN_KEY_CHECKS = 0');
+        
+        // Apaga tabelas antigas para evitar erros de coluna
+        await connection.query('DROP TABLE IF EXISTS imagens_veiculos');
+        await connection.query('DROP TABLE IF EXISTS veiculos');
+        await connection.query('DROP TABLE IF EXISTS categorias');
+        await connection.query('DROP TABLE IF EXISTS marcas');
 
+        // ==========================================
+        // 2. CRIAÇÃO DAS TABELAS (CORRIGIDO)
+        // ==========================================
+        
+        await connection.query(`
+            CREATE TABLE marcas (
+                id_marca INT AUTO_INCREMENT PRIMARY KEY,
+                nome VARCHAR(100) NOT NULL UNIQUE
+            )
+        `);
+
+        await connection.query(`
+            CREATE TABLE categorias (
+                id_categoria INT AUTO_INCREMENT PRIMARY KEY,
+                nome VARCHAR(100) NOT NULL,
+                url_amigavel VARCHAR(100) NOT NULL UNIQUE
+            )
+        `);
+
+        await connection.query(`
+            CREATE TABLE veiculos (
+                id_veiculo INT AUTO_INCREMENT PRIMARY KEY,
+                modelo VARCHAR(255) NOT NULL,
+                id_marca_fk INT NOT NULL,
+                id_categoria_fk INT NOT NULL,
+                ano INT,
+                cor VARCHAR(50),
+                preco DECIMAL(15,2),
+                km INT,
+                motor VARCHAR(100),
+                descricao TEXT,
+                disponivel BOOLEAN DEFAULT TRUE,
+                imagem_url TEXT, -- TEXT aceita links longos da internet
+                criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (id_marca_fk) REFERENCES marcas(id_marca),
+                FOREIGN KEY (id_categoria_fk) REFERENCES categorias(id_categoria)
+            )
+        `);
+
+        await connection.query(`
+            CREATE TABLE imagens_veiculos (
+                id_imagem INT AUTO_INCREMENT PRIMARY KEY,
+                id_veiculo_fk INT NOT NULL,
+                url_imagem TEXT NOT NULL,
+                imagem_principal BOOLEAN DEFAULT FALSE,
+                FOREIGN KEY (id_veiculo_fk) REFERENCES veiculos(id_veiculo) ON DELETE CASCADE
+            )
+        `);
+        
+        await connection.query('SET FOREIGN_KEY_CHECKS = 1');
+        console.log("🏗️ Tabelas recriadas com sucesso!");
+
+
+        // ==========================================
+        // 3. INSERÇÃO DOS DADOS (JSON)
+        // ==========================================
         const jsonData = await fs.readFile('./carros.json', 'utf-8');
         const veiculos = JSON.parse(jsonData);
 
-        // Inserir Marcas
+        // A. Inserir Marcas
         const brandNames = [...new Set(veiculos.map(v => v.marca).filter(Boolean))];
         const brandMap = new Map();
         console.log("\n🌱 Inserindo marcas...");
         for (const name of brandNames) {
-            await connection.execute('INSERT IGNORE INTO marcas (nome) VALUES (?)', [name]);
-            const [rows] = await connection.execute('SELECT id_marca FROM marcas WHERE nome = ?', [name]);
-            brandMap.set(name, rows[0].id_marca);
+            const [rows] = await connection.query('INSERT INTO marcas (nome) VALUES (?)', [name]);
+            brandMap.set(name, rows.insertId);
         }
-        console.log(`👍 Marcas inseridas: ${brandMap.size}`);
 
-        // Inserir Categorias
+        // B. Inserir Categorias
         const categorySlugs = [...new Set(veiculos.map(v => v.categoria).filter(Boolean))];
         const categoryMap = new Map();
         console.log("\n🌱 Inserindo categorias...");
         for (const slug of categorySlugs) {
             const name = slug.charAt(0).toUpperCase() + slug.slice(1);
-            await connection.execute('INSERT IGNORE INTO categorias (nome, url_amigavel) VALUES (?, ?)', [name, slug]);
-            const [rows] = await connection.execute('SELECT id_categoria FROM categorias WHERE url_amigavel = ?', [slug]);
-            categoryMap.set(slug, rows[0].id_categoria);
+            const [rows] = await connection.query('INSERT INTO categorias (nome, url_amigavel) VALUES (?, ?)', [name, slug]);
+            categoryMap.set(slug, rows.insertId);
         }
-        console.log(`👍 Categorias inseridas: ${categoryMap.size}`);
 
-        // Inserir Veículos com todos os detalhes
-        console.log("\n🚗 Inserindo veículos e imagens...");
+        // C. Inserir Veículos
+        console.log("\n🚗 Inserindo veículos...");
         for (const veiculo of veiculos) {
             const brandId = brandMap.get(veiculo.marca);
-            if (!brandId) { console.warn(`⚠️ Marca "${veiculo.marca}" não encontrada. Pulando veículo.`); continue; }
-
             const categoryId = categoryMap.get(veiculo.categoria);
-            if (!categoryId) { console.warn(`⚠️ Categoria "${veiculo.categoria}" não encontrada. Pulando veículo.`); continue; }
 
-            const [vehicleResult] = await connection.execute(
-                `INSERT INTO veiculos (modelo, ano, preco, condicao, km, motor, cor, descricao, id_marca_fk, id_categoria_fk) 
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            if (!brandId || !categoryId) continue;
+
+            const [result] = await connection.query(
+                `INSERT INTO veiculos (modelo, id_marca_fk, id_categoria_fk, ano, preco, km, motor, cor, descricao, disponivel, imagem_url)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                 [
-                    veiculo.modelo, veiculo.ano, parsePrice(veiculo.preco),
-                    parseKm(veiculo.km) > 0 ? 1 : 0, // Condição: 1=Usado, 0=Novo
-                    parseKm(veiculo.km), veiculo.motor, veiculo.cor, veiculo.descricao,
-                    brandId, categoryId
+                    veiculo.modelo, 
+                    brandId, 
+                    categoryId, 
+                    veiculo.ano, 
+                    parsePrice(veiculo.preco), 
+                    parseKm(veiculo.km), 
+                    veiculo.motor, 
+                    veiculo.cor, 
+                    veiculo.descricao, 
+                    1, 
+                    veiculo.imagem
                 ]
             );
-            const newVehicleId = vehicleResult.insertId;
-
-            if (veiculo.imagem) {
-                await connection.execute(
-                    'INSERT INTO imagens_veiculos (id_veiculo_fk, url_imagem, imagem_principal) VALUES (?, ?, ?)',
-                    [newVehicleId, veiculo.imagem, true]
-                );
-            }
         }
-        console.log(`👍 Veículos inseridos: ${veiculos.length}`);
-        console.log("\n🎉 Processo de seeding concluído com sucesso!");
+
+        console.log("🎉 TUDO PRONTO! Banco atualizado e populado.");
 
     } catch (error) {
-        console.error("\n❌ ERRO DURANTE O PROCESSO DE SEEDING:", error);
+        console.error("\n❌ ERRO FATAL:", error.message);
     } finally {
-        if (connection) {
-            await connection.end();
-            console.log("\n🔌 Conexão com o banco de dados fechada.");
-        }
+        if (connection) await connection.end();
     }
 }
 

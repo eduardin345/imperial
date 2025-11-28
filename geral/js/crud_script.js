@@ -1,6 +1,14 @@
-// js/crud_script.js (VERSÃO FINAL COM UPLOAD DE IMAGEM)
-
 document.addEventListener('DOMContentLoaded', () => {
+    
+    // --- GUARDA DE SEGURANÇA ---
+    // Verifica se existe um token de autenticação no armazenamento local do navegador.
+    // Se não houver, redireciona imediatamente para a página de login, protegendo o CRUD.
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+        window.location.href = 'login.html';
+        return; // Impede que o resto do script seja executado para usuários não autenticados.
+    }
+    
     // --- CONFIGURAÇÃO E CONSTANTES ---
     const API_BASE_URL = 'http://localhost:3002/api';
     const ENDPOINTS = {
@@ -25,12 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitButton = document.getElementById('submit-button');
     const clearButton = document.getElementById('clear-button');
     
-    // NOVO: Seletores de Imagem
-    const imagemInput = document.getElementById('imagem');
-    const imagePreview = document.getElementById('image-preview');
-    const imagePreviewText = document.getElementById('image-preview-text');
-
-    // --- SELETORES DA TABELA E BUSCA ---
+    // --- SELETORES DA TABELA E FILTROS DE BUSCA ---
     const corpoTabelaVeiculos = document.getElementById('corpo-tabela-veiculos');
     const searchFiltersContainer = document.getElementById('search-filters');
     const searchIdInput = document.getElementById('search-id');
@@ -41,213 +44,59 @@ document.addEventListener('DOMContentLoaded', () => {
     const clearFiltersBtn = document.getElementById('clear-filters-btn');
     
     // --- ESTADO DA APLICAÇÃO ---
-    let allVeiculos = [];
+    let allVeiculos = []; // Cache local de todos os veículos para a busca funcionar
     let isEditing = false;
-    let currentImageUrl = null; // Guarda a URL da imagem atual na edição
 
     // --- FUNÇÕES AUXILIARES ---
     function showNotification(message, type = 'success') {
-        alert(`${type === 'success' ? '✅' : '❌'} ${message}`);
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+        setTimeout(() => notification.classList.add('show'), 10);
+        setTimeout(() => {
+            notification.classList.remove('show');
+            notification.addEventListener('transitionend', () => notification.remove());
+        }, 3000);
     }
 
-    // --- CARREGAMENTO INICIAL ---
-    async function carregarCategorias() {
-        // ... (código sem alteração)
-    }
-
-    async function carregarVeiculos() {
-        // ... (código sem alteração)
-    }
-
-    function renderizarTabela(veiculos) {
-        // ... (código sem alteração)
-    }
-
-    // --- LÓGICA DO FORMULÁRIO ---
-    imagemInput.addEventListener('change', function() {
-        const file = this.files[0];
-        if (file) {
-            const reader = new FileReader();
-            imagePreviewText.style.display = 'none';
-            imagePreview.style.display = 'block';
-            reader.onload = (event) => {
-                imagePreview.setAttribute('src', event.target.result);
-            }
-            reader.readAsDataURL(file);
-        }
-    });
-
-    formVeiculo.addEventListener('submit', async (event) => {
-        event.preventDefault();
-        
-        const formData = new FormData();
-        formData.append('modelo', modeloInput.value.trim());
-        formData.append('marca', marcaInput.value.trim());
-        formData.append('id_categoria_fk', categoriaSelect.value);
-        formData.append('ano', anoInput.value);
-        formData.append('cor', corInput.value.trim());
-        formData.append('preco', precoInput.value);
-        formData.append('km', kmInput.value);
-        formData.append('motor', motorInput.value.trim());
-        formData.append('descricao', descricaoTextarea.value.trim());
-        formData.append('disponivel', disponivelCheckbox.checked);
-
-        if (imagemInput.files[0]) {
-            formData.append('imagem', imagemInput.files[0]);
-        } else if (isEditing && currentImageUrl) {
-            formData.append('imagem_url_existente', currentImageUrl);
-        }
-
-        const id = veiculoIdInput.value;
-        const url = isEditing ? `${ENDPOINTS.VEICULOS}/${id}` : ENDPOINTS.VEICULOS;
-        const method = isEditing ? 'PUT' : 'POST';
-        
-        submitButton.disabled = true;
-        submitButton.textContent = 'Salvando...';
-
-        try {
-            const response = await fetch(url, { method, body: formData });
-            
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || 'Falha na operação.');
-            }
-
-            showNotification(`Veículo ${isEditing ? 'atualizado' : 'criado'} com sucesso!`);
-            resetarFormulario();
-            await carregarVeiculos();
-        } catch (error) {
-            showNotification(`Falha: ${error.message}`, 'error');
-        } finally {
-            submitButton.disabled = false;
-            submitButton.textContent = isEditing ? 'Atualizar Veículo' : 'Salvar Veículo';
-        }
-    });
-
-    function resetarFormulario() {
-        formVeiculo.reset();
-        veiculoIdInput.value = '';
-        formTitle.textContent = 'Adicionar Novo Veículo';
-        submitButton.textContent = 'Salvar Veículo';
-        isEditing = false;
-        disponivelCheckbox.checked = true;
-        
-        imagePreview.setAttribute('src', '');
-        imagePreview.style.display = 'none';
-        imagePreviewText.style.display = 'block';
-        currentImageUrl = null;
-
-        modeloInput.focus();
-    }
-
-    clearButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        resetarFormulario();
-    });
-    
-    // --- LÓGICA DE EDIÇÃO E DELEÇÃO ---
-    corpoTabelaVeiculos.addEventListener('click', async (event) => {
-        const target = event.target.closest('button');
-        if (!target) return;
-
-        const id = target.dataset.id;
-        if (target.classList.contains('edit-btn') && id) {
-            const veiculo = allVeiculos.find(v => v.id_veiculo == id);
-            if(veiculo) popularFormularioParaEdicao(veiculo);
-        }
-        
-        if (target.classList.contains('delete-btn') && id) {
-            const modelo = target.dataset.modelo;
-            if (confirm(`Tem certeza que deseja deletar "${modelo}" (ID: ${id})?`)) {
-                deletarVeiculo(id, modelo);
-            }
-        }
-    });
-    
-    function popularFormularioParaEdicao(veiculo) {
-        formTitle.textContent = `Editando Veículo: ${veiculo.modelo}`;
-        submitButton.textContent = 'Atualizar Veículo';
-        isEditing = true;
-
-        veiculoIdInput.value = veiculo.id_veiculo;
-        modeloInput.value = veiculo.modelo;
-        marcaInput.value = veiculo.nome_marca;
-        categoriaSelect.value = veiculo.id_categoria_fk;
-        anoInput.value = veiculo.ano;
-        corInput.value = veiculo.cor;
-        precoInput.value = veiculo.preco;
-        kmInput.value = veiculo.km;
-        motorInput.value = veiculo.motor;
-        descricaoTextarea.value = veiculo.descricao;
-        disponivelCheckbox.checked = veiculo.disponivel;
-
-        if (veiculo.imagem_url) {
-            imagePreview.setAttribute('src', veiculo.imagem_url);
-            imagePreview.style.display = 'block';
-            imagePreviewText.style.display = 'none';
-            currentImageUrl = veiculo.imagem_url;
-        } else {
-            resetarFormulario(); // reusa a lógica de limpar o preview
-        }
-
-        window.scrollTo({ top: formVeiculo.offsetTop - 20, behavior: 'smooth' });
-        modeloInput.focus();
-    }
-
-    async function deletarVeiculo(id, modelo) {
-        try {
-            await fetch(`${ENDPOINTS.VEICULOS}/${id}`, { method: 'DELETE' });
-            showNotification(`Veículo "${modelo}" deletado com sucesso!`);
-            await carregarVeiculos();
-            resetarFormulario();
-        } catch (error) {
-            showNotification(`Falha ao deletar: ${error.message}`, 'error');
-        }
-    }
-
-    // --- LÓGICA DE BUSCA AVANÇADA ---
-    function filtrarVeiculos() {
-        // ... (código sem alteração)
-    }
-    
-    if (searchFiltersContainer) {
-        searchFiltersContainer.addEventListener('input', filtrarVeiculos);
-    }
-
-    if (clearFiltersBtn) {
-        clearFiltersBtn.addEventListener('click', () => {
-             // ... (código sem alteração)
-        });
-    }
-
-    // --- INICIALIZAÇÃO DA PÁGINA ---
-    async function init() {
-        await carregarCategorias();
-        await carregarVeiculos();
-        resetarFormulario();
-    }
-
-    init();
-
-    // =======================================================
-    // DEFINIÇÃO DAS FUNÇÕES QUE FORAM MINIMIZADAS (COPIE E COLE)
-    // =======================================================
+    // Função central para todas as chamadas à API.
+    // Ela adiciona automaticamente o token de autenticação em todas as requisições.
     async function apiFetch(url, options = {}) {
+        const token = localStorage.getItem('authToken');
+        const headers = {
+            'Content-Type': 'application/json',
+            ...options.headers,
+            'Authorization': `Bearer ${token}`
+        };
+
         try {
-            const response = await fetch(url, options);
+            const response = await fetch(url, { ...options, headers });
+            
+            // Se o token for inválido ou expirado, o backend retornará 401 ou 403.
+            // Neste caso, limpamos o token local e expulsamos o usuário para a tela de login.
+            if (response.status === 401 || response.status === 403) {
+                localStorage.removeItem('authToken');
+                window.location.href = 'login.html';
+                throw new Error('Sessão expirada ou inválida. Faça login novamente.');
+            }
+
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
-                const errorMessage = errorData.error || `Erro HTTP: ${response.status}`;
-                throw new Error(errorMessage);
+                throw new Error(errorData.error || `Erro HTTP: ${response.status}`);
             }
+
+            // Para respostas DELETE que não têm corpo (status 204)
             if (response.status === 204) return { success: true };
+
             return await response.json();
         } catch (error) {
             console.error('Falha na API:', error);
-            throw new Error(error.message || 'Não foi possível conectar ao servidor.');
+            throw error; // Re-lança o erro para ser tratado pela função que chamou
         }
     }
 
+    // --- CARREGAMENTO DE DADOS INICIAIS ---
     async function carregarCategorias() {
         try {
             const categorias = await apiFetch(ENDPOINTS.CATEGORIAS);
@@ -257,7 +106,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         } catch (error) {
             categoriaSelect.innerHTML = '<option value="">Erro ao carregar</option>';
-            console.error('Falha ao carregar categorias:', error);
         }
     }
     
@@ -267,8 +115,8 @@ document.addEventListener('DOMContentLoaded', () => {
             allVeiculos = await apiFetch(ENDPOINTS.VEICULOS);
             renderizarTabela(allVeiculos);
          } catch(error) {
-             showNotification('Falha ao carregar veículos. Verifique o console (F12).', 'error');
-             corpoTabelaVeiculos.innerHTML = `<tr><td colspan="8" class="error">Erro ao carregar veículos. A API está online?</td></tr>`;
+             showNotification(error.message, 'error');
+             corpoTabelaVeiculos.innerHTML = `<tr><td colspan="8" class="error">Erro ao carregar veículos.</td></tr>`;
          }
     }
 
@@ -296,6 +144,112 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- LÓGICA DO FORMULÁRIO (CRIAR E ATUALIZAR) ---
+    formVeiculo.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        
+        const dadosVeiculo = {
+            modelo: modeloInput.value.trim(),
+            marca: marcaInput.value.trim(),
+            id_categoria_fk: parseInt(categoriaSelect.value),
+            ano: anoInput.value ? parseInt(anoInput.value) : null,
+            cor: corInput.value.trim(),
+            preco: precoInput.value ? parseFloat(precoInput.value) : null,
+            km: kmInput.value ? parseInt(kmInput.value) : 0,
+            motor: motorInput.value.trim(),
+            descricao: descricaoTextarea.value.trim(),
+            disponivel: disponivelCheckbox.checked
+        };
+        
+        const id = veiculoIdInput.value;
+        const url = isEditing ? `${ENDPOINTS.VEICULOS}/${id}` : ENDPOINTS.VEICULOS;
+        const method = isEditing ? 'PUT' : 'POST';
+        
+        submitButton.disabled = true;
+        submitButton.textContent = 'Salvando...';
+
+        try {
+            await apiFetch(url, { method, body: JSON.stringify(dadosVeiculo) });
+            showNotification(`Veículo ${isEditing ? 'atualizado' : 'criado'} com sucesso!`);
+            resetarFormulario();
+            await carregarVeiculos(); // Recarrega a lista de veículos após a operação
+        } catch (error) {
+            showNotification(`Falha: ${error.message}`, 'error');
+        } finally {
+            submitButton.disabled = false;
+            submitButton.textContent = isEditing ? 'Atualizar Veículo' : 'Salvar Veículo';
+        }
+    });
+
+    function resetarFormulario() {
+        formVeiculo.reset();
+        veiculoIdInput.value = '';
+        formTitle.textContent = 'Adicionar Novo Veículo';
+        submitButton.textContent = 'Salvar Veículo';
+        isEditing = false;
+        disponivelCheckbox.checked = true;
+        modeloInput.focus();
+    }
+
+    clearButton.addEventListener('click', (e) => { e.preventDefault(); resetarFormulario(); });
+    
+    // --- LÓGICA DA TABELA (EDITAR E DELETAR) ---
+    corpoTabelaVeiculos.addEventListener('click', async (event) => {
+        const target = event.target.closest('button');
+        if (!target) return;
+
+        const id = target.dataset.id;
+
+        if (target.classList.contains('edit-btn')) {
+            try {
+                const veiculo = await apiFetch(`${ENDPOINTS.VEICULOS}/${id}`);
+                popularFormularioParaEdicao(veiculo);
+            } catch (error) {
+                showNotification(`Erro ao carregar veículo: ${error.message}`, 'error');
+            }
+        }
+        
+        if (target.classList.contains('delete-btn')) {
+            const modelo = target.dataset.modelo;
+            if (confirm(`Tem certeza que deseja deletar o veículo "${modelo}"?`)) {
+                deletarVeiculo(id, modelo);
+            }
+        }
+    });
+    
+    function popularFormularioParaEdicao(veiculo) {
+        formTitle.textContent = `Editando Veículo: ${veiculo.modelo}`;
+        submitButton.textContent = 'Atualizar Veículo';
+        isEditing = true;
+
+        veiculoIdInput.value = veiculo.id_veiculo;
+        modeloInput.value = veiculo.modelo;
+        marcaInput.value = veiculo.nome_marca;
+        categoriaSelect.value = veiculo.id_categoria_fk;
+        anoInput.value = veiculo.ano;
+        corInput.value = veiculo.cor;
+        precoInput.value = veiculo.preco;
+        kmInput.value = veiculo.km;
+        motorInput.value = veiculo.motor;
+        descricaoTextarea.value = veiculo.descricao;
+        disponivelCheckbox.checked = veiculo.disponivel;
+
+        window.scrollTo({ top: formVeiculo.offsetTop - 20, behavior: 'smooth' });
+        modeloInput.focus();
+    }
+
+    async function deletarVeiculo(id, modelo) {
+        try {
+            await apiFetch(`${ENDPOINTS.VEICULOS}/${id}`, { method: 'DELETE' });
+            showNotification(`Veículo "${modelo}" deletado com sucesso!`);
+            await carregarVeiculos();
+            resetarFormulario();
+        } catch (error) {
+            showNotification(`Falha ao deletar: ${error.message}`, 'error');
+        }
+    }
+
+    // --- LÓGICA DA BUSCA AVANÇADA ---
     function filtrarVeiculos() {
         const idTerm = searchIdInput.value.trim();
         const modeloTerm = searchModeloInput.value.trim().toLowerCase();
@@ -310,23 +264,27 @@ document.addEventListener('DOMContentLoaded', () => {
             const anoMatch = !anoTerm || (v.ano && v.ano.toString().includes(anoTerm));
             
             let disponivelMatch = true;
-            if (disponivelTerm === "sim") disponivelMatch = v.disponivel === 1;
-            else if (disponivelTerm === "nao") disponivelMatch = v.disponivel === 0;
+            if (disponivelTerm === "sim") disponivelMatch = v.disponivel === true;
+            else if (disponivelTerm === "nao") disponivelMatch = v.disponivel === false;
 
             return idMatch && modeloMatch && marcaMatch && anoMatch && disponivelMatch;
         });
-
         renderizarTabela(veiculosFiltrados);
     }
     
-    if (clearFiltersBtn) {
-        clearFiltersBtn.addEventListener('click', () => {
-            searchIdInput.value = '';
-            searchModeloInput.value = '';
-            searchMarcaInput.value = '';
-            searchAnoInput.value = '';
-            searchDisponivelSelect.value = '';
-            filtrarVeiculos();
-        });
+    if (searchFiltersContainer) searchFiltersContainer.addEventListener('input', filtrarVeiculos);
+
+    if (clearFiltersBtn) clearFiltersBtn.addEventListener('click', () => {
+        searchFiltersContainer.querySelectorAll('input, select').forEach(el => el.value = '');
+        filtrarVeiculos();
+    });
+
+    // --- INICIALIZAÇÃO DA PÁGINA ---
+    async function init() {
+        await carregarCategorias();
+        await carregarVeiculos();
+        resetarFormulario();
     }
+
+    init();
 });

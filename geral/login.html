@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autenticação - IMPERIAL</title>
+    <link rel="stylesheet" href="css/crud_styles.css"> 
+</head>
+<body>
+    <main class="crud-page-container" style="max-width: 450px; margin-top: 80px;">
+        <div class="form-card">
+            <h1 id="auth-title" style="font-size: 1.8em; text-align: center;">Acesso ao Painel</h1>
+            
+            <!-- FORMULÁRIO DE LOGIN (Visível por padrão) -->
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-email">Email:</label>
+                    <input type="email" id="login-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-senha">Senha:</label>
+                    <input type="password" id="login-senha" required>
+                </div>
+                <div class="form-actions" style="justify-content: center;">
+                    <button type="submit" id="login-submit-button">Entrar</button>
+                </div>
+                <div class="form-footer">
+                    <span>Não tem uma conta? <a href="#" id="show-register-link">Cadastre-se</a></span>
+                </div>
+            </form>
+
+            <!-- FORMULÁRIO DE CADASTRO (Escondido por padrão) -->
+            <form id="cadastro-form" class="hidden">
+                <div class="form-group">
+                    <label for="cadastro-nome">Nome Completo:</label>
+                    <input type="text" id="cadastro-nome" required>
+                </div>
+                <div class="form-group">
+                    <label for="cadastro-email">Email:</label>
+                    <input type="email" id="cadastro-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="cadastro-senha">Senha (mín. 6 caracteres):</label>
+                    <input type="password" id="cadastro-senha" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label for="confirmar-senha">Confirmar Senha:</label>
+                    <input type="password" id="confirmar-senha" required minlength="6">
+                </div>
+                <div class="form-actions" style="justify-content: center;">
+                    <button type="submit" id="cadastro-submit-button">Cadastrar</button>
+                </div>
+                <div class="form-footer">
+                    <span>Já tem uma conta? <a href="#" id="show-login-link">Faça login</a></span>
+                </div>
+            </form>
+
+            <!-- Mensagens de Feedback para ambos os formulários -->
+            <p id="error-message" class="error-message" style="display: none;"></p>
+            <p id="success-message" class="success-message" style="display: none;"></p>
+        </div>
+    </main>
+    
+    <!-- NOVO SCRIPT UNIFICADO -->
+    <script src="js/auth.js"></script>
+</body>
+</html>

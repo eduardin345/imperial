@@ -1,23 +1,21 @@
 [
   {
-    "id": 1,
-    "marca": "Volkswagen", 
     "modelo": "JETTA GLI",
-   "categoria": "carros",
-    "imagem": "img/jetta.webp",
+    "marca": "Volkswagen", 
+    "categoria": "carros",
+    "imagem": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/2022_Volkswagen_Jetta_GLI_2.0_s.jpg/1200px-2022_Volkswagen_Jetta_GLI_2.0_s.jpg",
     "destaque_modelo": true,
     "preco": "R$ 239.990",
     "ano": 2023,
     "km": "0 KM",
     "motor": "2.0 TSI",
     "cor": "Branco Puro",
-    "descricao": "O sedã esportivo que redefine performance. Com 231cv de potência, o Jetta GLI oferece uma condução emocionante sem abrir mão do conforto e da tecnologia de ponta."
+    "descricao": "O sedã esportivo que redefine performance."
   },
   {
-    "id": 2,
     "modelo": "COROLLA ALTIS HYBRID",
     "marca": "Toyota",
-    "imagem": "img/corola do novo.jpg",
+    "imagem": "https://upload.wikimedia.org/wikipedia/commons/6/63/2020_Toyota_Corolla_Altis_1.6_G_%28Philippines%29.jpg",
     "categoria": "carros",
     "destaque_modelo": true,
     "preco": "R$ 198.990",
@@ -25,13 +23,12 @@
     "km": "0 KM",
     "motor": "1.8 Hybrid",
     "cor": "Prata Supernova",
-    "descricao": "A combinação perfeita entre eficiência e sofisticação. O Corolla Altis Hybrid entrega consumo de combustível excepcional, conforto superior e a confiabilidade lendária da Toyota."
+    "descricao": "Eficiência e sofisticação Toyota."
   },
   {
-    "id": 3,
     "modelo": "FORD EVEREST",
     "marca": "Ford",
-    "imagem": "img/ford-everest.webp",
+    "imagem": "https://upload.wikimedia.org/wikipedia/commons/f/fc/2022_Ford_Everest_Sport_%28Thailand%29_front_view.jpg",
     "categoria": "suvs",
     "destaque_modelo": true,
     "preco": "R$ 415.500",
@@ -39,13 +36,12 @@
     "km": "1.500 KM",
     "motor": "3.0 V6 Turbodiesel",
     "cor": "Azul Estoril",
-    "descricao": "Um SUV que encara qualquer desafio. Com tração 4x4, sete lugares e um motor V6 potente, o Ford Everest é sinônimo de aventura, luxo e capacidade off-road."
+    "descricao": "Um SUV que encara qualquer desafio."
   },
   {
-    "id": 4,
     "modelo": "CIVIC G10 TOURING",
     "marca": "Honda",
-    "imagem": "img/civic g10.jpg",
+    "imagem": "https://upload.wikimedia.org/wikipedia/commons/f/f6/2016_Honda_Civic_Touring_1.5L_front_5.23.18.jpg",
     "categoria": "carros",
     "destaque_modelo": true,
     "preco": "R$ 152.000",
@@ -53,55 +49,51 @@
     "km": "35.000 KM",
     "motor": "1.5 Turbo",
     "cor": "Cinza Barium",
-    "descricao": "Um ícone de design e performance. A décima geração do Civic na versão Touring traz teto solar, motor turbo e um pacote completo de tecnologia e segurança."
+    "descricao": "Um ícone de design e performance."
   },
   {
-    "id": 5,
     "modelo": "MINI COOPER S",
     "marca": "Mini",
-    "imagem": "img/mini cooper s.jpg",
+    "imagem": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Mini_Cooper_S_5-Door_%28F55%29_%E2%80%93_Frontansicht%2C_28._Februar_2015%2C_D%C3%BCsseldorf.jpg/1200px-Mini_Cooper_S_5-Door_%28F55%29_%E2%80%93_Frontansicht%2C_28._Februar_2015%2C_D%C3%BCsseldorf.jpg",
     "categoria": "esportivos",
     "destaque_modelo": true,
     "preco": "R$ 212.990",
     "ano": 2022,
     "km": "12.000 KM",
     "motor": "2.0 Turbo",
-    "cor": "Verde British Racing",
-    "descricao": "Pura diversão ao volante! O Mini Cooper S é famoso por sua agilidade 'go-kart feeling', design icônico e um interior premium que esbanja estilo."
+    "cor": "Verde British",
+    "descricao": "Pura diversão ao volante!"
   },
   {
-    "id": 6,
     "modelo": "GWM HAVAL H6 PHEV",
     "marca": "GWM",
-    "imagem": "img/haval.jpg",
+    "imagem": "https://upload.wikimedia.org/wikipedia/commons/d/de/Haval_H6_S_PHEV_IAA_2021_1X7A0064.jpg",
     "categoria": "suvs",
     "destaque_modelo": true,
     "preco": "R$ 279.000",
     "ano": 2024,
     "km": "0 KM",
-    "motor": "1.5 Turbo Híbrido Plug-in",
+    "motor": "1.5 Turbo Híbrido",
     "cor": "Branco Ágata",
-    "descricao": "A revolução dos SUVs híbridos. Com incrível autonomia elétrica e uma lista impressionante de equipamentos, o Haval H6 oferece o futuro da mobilidade, hoje."
+    "descricao": "A revolução dos SUVs híbridos."
   },
   {
-    "id": 7,
     "modelo": "Lamborghini Huracan",
     "marca": "Lamborghini",
-    "imagem": "img/lambo.webp",
+    "imagem": "https://upload.wikimedia.org/wikipedia/commons/e/e5/2014-03-04_Geneva_Motor_Show_1379.JPG",
     "categoria": "esportivos",
     "destaque_modelo": false,
     "preco": "R$ 3.800.000",
     "ano": 2022,
     "km": "5.000 KM",
-    "motor": "5.2 V10 Aspirado",
+    "motor": "5.2 V10",
     "cor": "Verde Mantis",
-    "descricao": "Uma obra de arte sobre rodas. O motor V10 aspirado grita até o limite, proporcionando uma experiência de condução visceral e inesquecível. Exclusividade e performance absoluta."
+    "descricao": "Uma obra de arte sobre rodas."
   },
   {
-    "id": 8,
     "modelo": "BMW M4 COMPETITION",
     "marca": "BMW",
-    "imagem": "img/bmw m4.webp",
+    "imagem": "https://upload.wikimedia.org/wikipedia/commons/1/1a/BMW_G82_IAA_2021_1X7A0086.jpg",
     "categoria": "esportivos",
     "destaque_modelo": false,
     "preco": "R$ 829.950",
@@ -109,13 +101,12 @@
     "km": "4.500 KM",
     "motor": "3.0 Bi-Turbo",
     "cor": "Azul Portimao",
-    "descricao": "Engenharia alemã no seu auge. O M4 Competition é um monstro das pistas, legalizado para as ruas. Precisão, potência e um design que intimida."
+    "descricao": "Engenharia alemã no seu auge."
   },
   {
-    "id": 9,
     "modelo": "BMW X7 M60i",
     "marca": "BMW",
-    "imagem": "img/bmw x7.webp",
+    "imagem": "https://upload.wikimedia.org/wikipedia/commons/a/af/2020_BMW_X7_M50i_Front.jpg",
     "categoria": "suvs",
     "destaque_modelo": false,
     "preco": "R$ 1.154.950",
@@ -123,13 +114,12 @@
     "km": "0 KM",
     "motor": "4.4 V8 Bi-Turbo",
     "cor": "Preto Safira",
-    "descricao": "O auge do luxo e do poder em um SUV. O X7 oferece espaço para sete passageiros com conforto de primeira classe, impulsionado por um poderoso motor V8."
+    "descricao": "O auge do luxo em um SUV."
   },
   {
-    "id": 10,
     "modelo": "MERCEDES-BENZ GLE COUPE",
     "marca": "Mercedes",
-    "imagem": "img/GLE COUPE.webp",
+    "imagem": "https://upload.wikimedia.org/wikipedia/commons/a/aa/Mercedes-Benz_C292_GLE_400_Coupe_AMG_Line_Frontansicht_Diamantsilber.jpg",
     "categoria": "suvs",
     "destaque_modelo": false,
     "preco": "R$ 755.000",
@@ -137,34 +127,32 @@
     "km": "9.800 KM",
     "motor": "3.0 Turbo",
     "cor": "Cinza Selenita",
-    "descricao": "Estilo que se destaca na multidão. O GLE Coupé combina a imponência de um SUV com a elegância de um coupé esportivo. Um interior tecnológico e luxuoso completa o pacote."
+    "descricao": "Estilo que se destaca."
   },
   {
-    "id": 11,
     "modelo": "FORD F-150 RAPTOR",
     "marca": "Ford",
-    "imagem": "img/Ford_F-150_Raptor.webp",
+    "imagem": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Ford_F-150_Raptor_Gen3_img10.jpg/1200px-Ford_F-150_Raptor_Gen3_img10.jpg",
     "categoria": "picape",
     "destaque_modelo": false,
     "preco": "R$ 519.990",
     "ano": 2023,
     "km": "3.000 KM",
-    "motor": "3.5 V6 Bi-Turbo",
+    "motor": "3.5 V6",
     "cor": "Laranja Atacama",
-    "descricao": "A picape off-road definitiva. Projetada para voar sobre o deserto, a Raptor tem suspensão FOX de alta performance e um motor V6 que não decepciona."
+    "descricao": "A picape off-road definitiva."
   },
   {
-    "id": 12,
     "modelo": "RAM 1500 TRX",
     "marca": "Ram",
-    "imagem": "img/ram trx.png",
+    "imagem": "https://upload.wikimedia.org/wikipedia/commons/f/fb/2021_Ram_1500_TRX%2C_front_10.22.21.jpg",
     "categoria": "picape",
     "destaque_modelo": false,
     "preco": "R$ 989.000",
     "ano": 2023,
     "km": "800 KM",
-    "motor": "6.2 V8 Supercharged HEMI",
+    "motor": "6.2 V8",
     "cor": "Vermelho Intenso",
-    "descricao": "O predador alfa das picapes. Com mais de 700 cavalos de potência, a TRX é a picape de produção em série mais rápida e poderosa já feita. Potência pura."
+    "descricao": "O predador alfa das picapes."
   }
 ]
