@@ -51,17 +51,29 @@
     </aside>
 
     <nav class="main-navigation" id="main-menu" aria-hidden="true">
-        <button class="menu-close" aria-label="Fechar menu principal">
-            
-        </button>
-        <ul>
-            <li><a href="comprar.html">Comprar</a></li>
+    <button class="menu-close" aria-label="Fechar menu principal">×</button>
+    <ul>
+        <li><a href="index.html">Início</a></li>
+        
+        <!-- Link Admin: Começa invisível (style="display: none") -->
+        <li id="admin-link-li" style="display: none;">
+            <a href="crud_veiculos.html">Gerenciar Veículos</a>
+        </li>
+        
+       <li><a href="comprar.html">Comprar</a></li>
 
-  
-            <li><a href="login.html">Minha Conta</a></li>
-        </ul>
-    </nav>
 
+        <!-- Link de Login: Aparece se NÃO estiver logado -->
+        <li id="login-link-li">
+            <a href="login.html">Entrar / Cadastrar</a>
+        </li>
+
+        <!-- Link de Logout: Aparece se ESTIVER logado (style="display: none") -->
+        <li id="logout-link-li" style="display: none;">
+            <a href="#" id="logout-btn" style="color: #dc3545; font-weight: bold;">Sair</a>
+        </li>
+    </ul>
+</nav>
 
 <!-- Dentro do .header-right-content -->
 <div class="search-container">

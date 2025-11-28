@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Autenticação - IMPERIAL</title>
+    <title>Acesso ao Painel - IMPERIAL</title>
     <link rel="stylesheet" href="css/crud_styles.css"> 
 </head>
 <body>
     <main class="crud-page-container" style="max-width: 450px; margin-top: 80px;">
         <div class="form-card">
+            <!-- Título que muda via JS -->
             <h1 id="auth-title" style="font-size: 1.8em; text-align: center;">Acesso ao Painel</h1>
             
-            <!-- FORMULÁRIO DE LOGIN (Visível por padrão) -->
+            <!-- FORMULÁRIO DE LOGIN -->
             <form id="login-form">
                 <div class="form-group">
                     <label for="login-email">Email:</label>
@@ -29,7 +30,7 @@
                 </div>
             </form>
 
-            <!-- FORMULÁRIO DE CADASTRO (Escondido por padrão) -->
+            <!-- FORMULÁRIO DE CADASTRO (Começa oculto pela classe .hidden no CSS) -->
             <form id="cadastro-form" class="hidden">
                 <div class="form-group">
                     <label for="cadastro-nome">Nome Completo:</label>
@@ -55,13 +56,13 @@
                 </div>
             </form>
 
-            <!-- Mensagens de Feedback para ambos os formulários -->
+            <!-- Mensagens de Feedback -->
             <p id="error-message" class="error-message" style="display: none;"></p>
             <p id="success-message" class="success-message" style="display: none;"></p>
         </div>
     </main>
     
-    <!-- NOVO SCRIPT UNIFICADO -->
+    <!-- IMPORTANTE: O script deve estar aqui no final -->
     <script src="js/auth.js"></script>
 </body>
 </html>

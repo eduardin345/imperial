@@ -1,5 +1,20 @@
 // js/auth.js
 document.addEventListener('DOMContentLoaded', () => {
+
+    // --- 1. VERIFICAÇÃO AUTOMÁTICA DE LOGIN ---
+    // Se já existir um token e uma role salvos, redireciona imediatamente.
+    const savedToken = localStorage.getItem('authToken');
+    const savedRole = localStorage.getItem('userRole');
+
+    if (savedToken && savedRole) {
+        if (savedRole === 'admin') {
+            window.location.href = 'crud_veiculos.html';
+        } else {
+            window.location.href = 'index.html';
+        }
+        return; // Para a execução do script aqui
+    }
+
     // --- SELETORES GERAIS ---
     const authTitle = document.getElementById('auth-title');
     const loginForm = document.getElementById('login-form');
@@ -59,8 +74,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
             if (!response.ok) throw new Error(data.error || 'Erro ao fazer login.');
 
+            // --- SALVANDO DADOS NO NAVEGADOR ---
             localStorage.setItem('authToken', data.token);
+            localStorage.setItem('userRole', data.role); // Importante: Salva se é admin ou user
+
+            // Redireciona
             window.location.href = data.role === 'admin' ? 'crud_veiculos.html' : 'index.html';
+            
         } catch (error) {
             errorMessage.textContent = error.message;
             errorMessage.style.display = 'block';
@@ -105,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             successMessage.textContent = `${data.message} Você será redirecionado para o login.`;
             successMessage.style.display = 'block';
-            setTimeout(() => showLoginForm(), 2500); // Mostra o form de login após o sucesso
+            setTimeout(() => showLoginForm(), 2500); 
         } catch (error) {
             errorMessage.textContent = error.message;
             errorMessage.style.display = 'block';

@@ -7,42 +7,37 @@ dotenv.config();
 function parsePrice(priceString) {
     if (!priceString) return 0;
     if (typeof priceString === 'number') return priceString;
-    return parseFloat(priceString.replace('R$ ', '').replace(/\./g, '').replace(',', '.'));
+    return parseFloat(priceString.toString().replace(/[^0-9,]/g, '').replace(',', '.'));
 }
 
 function parseKm(kmString) {
     if (!kmString) return 0;
     if (typeof kmString === 'number') return kmString;
-    return parseInt(kmString.replace(/\D/g, ''));
+    return parseInt(kmString.toString().replace(/\D/g, ''));
 }
 
 async function seedDatabase() {
     let connection;
     try {
+        // Conecta direto na raiz para poder apagar o banco se precisar
         connection = await mysql.createConnection({
             host: process.env.DB_HOST || 'localhost',
             user: process.env.DB_USER || 'root',
             password: process.env.DB_PASSWORD,
-            database: process.env.DB_NAME || 'imperial_db',
         });
-        console.log("✅ Conectado ao banco de dados MySQL.");
-
-        // ==========================================
-        // 1. LIMPEZA TOTAL (RESET)
-        // ==========================================
-        console.log("🔥 Recriando estrutura do banco de dados...");
-        await connection.query('SET FOREIGN_KEY_CHECKS = 0');
         
-        // Apaga tabelas antigas para evitar erros de coluna
-        await connection.query('DROP TABLE IF EXISTS imagens_veiculos');
-        await connection.query('DROP TABLE IF EXISTS veiculos');
-        await connection.query('DROP TABLE IF EXISTS categorias');
-        await connection.query('DROP TABLE IF EXISTS marcas');
+        const dbName = process.env.DB_NAME || 'imperial_db';
 
-        // ==========================================
-        // 2. CRIAÇÃO DAS TABELAS (CORRIGIDO)
-        // ==========================================
+        console.log(`💣 MODO DESTRUIDOR: Resetando banco '${dbName}'...`);
         
+        // 1. Destruir e recriar o Banco
+        await connection.query(`DROP DATABASE IF EXISTS ${dbName}`);
+        await connection.query(`CREATE DATABASE ${dbName}`);
+        await connection.query(`USE ${dbName}`);
+        
+        console.log("✅ Banco recriado. Criando tabelas blindadas...");
+
+        // 2. Criar tabelas (usando LONGTEXT para links gigantes)
         await connection.query(`
             CREATE TABLE marcas (
                 id_marca INT AUTO_INCREMENT PRIMARY KEY,
@@ -71,83 +66,67 @@ async function seedDatabase() {
                 motor VARCHAR(100),
                 descricao TEXT,
                 disponivel BOOLEAN DEFAULT TRUE,
-                imagem_url TEXT, -- TEXT aceita links longos da internet
+                imagem_url LONGTEXT,  -- AQUI ESTÁ O SEGREDO: LONGTEXT
                 criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (id_marca_fk) REFERENCES marcas(id_marca),
                 FOREIGN KEY (id_categoria_fk) REFERENCES categorias(id_categoria)
             )
         `);
-
+        
         await connection.query(`
-            CREATE TABLE imagens_veiculos (
-                id_imagem INT AUTO_INCREMENT PRIMARY KEY,
-                id_veiculo_fk INT NOT NULL,
-                url_imagem TEXT NOT NULL,
-                imagem_principal BOOLEAN DEFAULT FALSE,
-                FOREIGN KEY (id_veiculo_fk) REFERENCES veiculos(id_veiculo) ON DELETE CASCADE
+            CREATE TABLE usuarios (
+                id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+                nome_completo VARCHAR(255),
+                email VARCHAR(255),
+                senha VARCHAR(255),
+                role VARCHAR(50) DEFAULT 'user'
             )
         `);
-        
-        await connection.query('SET FOREIGN_KEY_CHECKS = 1');
-        console.log("🏗️ Tabelas recriadas com sucesso!");
 
+        console.log("🏗️ Tabelas prontas. Lendo dados...");
 
-        // ==========================================
-        // 3. INSERÇÃO DOS DADOS (JSON)
-        // ==========================================
+        // 3. Ler dados do JSON
         const jsonData = await fs.readFile('./carros.json', 'utf-8');
         const veiculos = JSON.parse(jsonData);
 
-        // A. Inserir Marcas
-        const brandNames = [...new Set(veiculos.map(v => v.marca).filter(Boolean))];
-        const brandMap = new Map();
-        console.log("\n🌱 Inserindo marcas...");
-        for (const name of brandNames) {
-            const [rows] = await connection.query('INSERT INTO marcas (nome) VALUES (?)', [name]);
-            brandMap.set(name, rows.insertId);
+        // 4. Inserir Dados
+        for (const car of veiculos) {
+            // Insere/Pega Marca
+            await connection.query('INSERT IGNORE INTO marcas (nome) VALUES (?)', [car.marca]);
+            const [mRows] = await connection.query('SELECT id_marca FROM marcas WHERE nome = ?', [car.marca]);
+            
+            // Insere/Pega Categoria
+            const catName = car.categoria.charAt(0).toUpperCase() + car.categoria.slice(1);
+            await connection.query('INSERT IGNORE INTO categorias (nome, url_amigavel) VALUES (?, ?)', [catName, car.categoria]);
+            const [cRows] = await connection.query('SELECT id_categoria FROM categorias WHERE url_amigavel = ?', [car.categoria]);
+
+            // Insere Carro
+            if(mRows[0] && cRows[0]) {
+                await connection.query(
+                    `INSERT INTO veiculos 
+                    (modelo, id_marca_fk, id_categoria_fk, ano, cor, preco, km, motor, descricao, disponivel, imagem_url)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                    [
+                        car.modelo,
+                        mRows[0].id_marca,
+                        cRows[0].id_categoria,
+                        car.ano,
+                        car.cor || '',
+                        parsePrice(car.preco),
+                        parseKm(car.km),
+                        car.motor || '',
+                        car.descricao || '',
+                        1,
+                        car.imagem // Link gigante entra aqui sem cortar
+                    ]
+                );
+            }
         }
 
-        // B. Inserir Categorias
-        const categorySlugs = [...new Set(veiculos.map(v => v.categoria).filter(Boolean))];
-        const categoryMap = new Map();
-        console.log("\n🌱 Inserindo categorias...");
-        for (const slug of categorySlugs) {
-            const name = slug.charAt(0).toUpperCase() + slug.slice(1);
-            const [rows] = await connection.query('INSERT INTO categorias (nome, url_amigavel) VALUES (?, ?)', [name, slug]);
-            categoryMap.set(slug, rows.insertId);
-        }
-
-        // C. Inserir Veículos
-        console.log("\n🚗 Inserindo veículos...");
-        for (const veiculo of veiculos) {
-            const brandId = brandMap.get(veiculo.marca);
-            const categoryId = categoryMap.get(veiculo.categoria);
-
-            if (!brandId || !categoryId) continue;
-
-            const [result] = await connection.query(
-                `INSERT INTO veiculos (modelo, id_marca_fk, id_categoria_fk, ano, preco, km, motor, cor, descricao, disponivel, imagem_url)
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-                [
-                    veiculo.modelo, 
-                    brandId, 
-                    categoryId, 
-                    veiculo.ano, 
-                    parsePrice(veiculo.preco), 
-                    parseKm(veiculo.km), 
-                    veiculo.motor, 
-                    veiculo.cor, 
-                    veiculo.descricao, 
-                    1, 
-                    veiculo.imagem
-                ]
-            );
-        }
-
-        console.log("🎉 TUDO PRONTO! Banco atualizado e populado.");
+        console.log(`🎉 SUCESSO! ${veiculos.length} veículos com fotos carregados!`);
 
     } catch (error) {
-        console.error("\n❌ ERRO FATAL:", error.message);
+        console.error("❌ ERRO FATAL:", error);
     } finally {
         if (connection) await connection.end();
     }

@@ -1,368 +1,331 @@
-/*
-   crud_styles.css
-   Estilos aprimorados para a página de gerenciamento de veículos.
-*/
+/* =========================================
+   IMPERIAL - ESTILOS DO SISTEMA (CRUD & AUTH)
+   Tema: Minimalista Preto & Branco (Igual ao Site)
+   ========================================= */
 
-/* --- VARIÁVEIS GLOBAIS E RESET --- */
 :root {
-    /* Paleta de Cores */
-    --primary-color: #007bff;
-    --success-color: #28a745;
-    --success-hover-color: #218838;
-    --danger-color: #dc3545;
-    --warning-color: #ffc107;
-    --secondary-color: #6c757d;
-    --secondary-hover-color: #5a6268;
-    --dark-color: #343a40;
-    --text-color: #333;
-    --text-light-color: #555;
-    --border-color: #ccc;
-    --border-light-color: #e0e0e0;
-    --bg-page-color: #f4f7f6;
-    --bg-card-color: #fff;
-    --bg-zebra-color: #f9f9f9;
-    --focus-shadow-color: rgba(0, 123, 255, .25);
-
-    /* Fontes */
-    --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    /* Cores da Marca */
+    --primary-color: #000000;    /* Preto Imperial */
+    --secondary-color: #333333;  /* Cinza Escuro */
+    --accent-color: #000000;     /* Ações principais */
+    
+    /* Cores de Estado (Mantinham-se funcionais, mas discretas) */
+    --success-color: #198754;    /* Verde */
+    --danger-color: #dc3545;     /* Vermelho */
+    --warning-color: #ffc107;    /* Amarelo */
+    
+    /* Fundo e Texto */
+    --bg-page: #f0f2f5;          /* Mesmo cinza claro da seção de serviços do site */
+    --card-bg: #ffffff;
+    --text-main: #000000;
+    --text-muted: #666666;
+    --border-color: #dddddd;
+    
+    /* Sombras e Fontes */
+    --shadow-card: 0 4px 12px rgba(0,0,0,0.08); /* Sombra mais discreta e elegante */
+    --font-family: sans-serif; /* Igual ao body do site */
 }
 
-*, *::before, *::after {
+* {
     box-sizing: border-box;
 }
 
 body {
+    background-color: var(--bg-page);
+    color: var(--text-main);
     font-family: var(--font-family);
-    background-color: var(--bg-page-color);
-    color: var(--text-color);
-    margin: 0;
-    line-height: 1.6;
+    /* O resto das propriedades do body vêm do seu css.css principal */
 }
 
 /* --- CONTAINER PRINCIPAL --- */
 .crud-page-container {
     max-width: 1200px;
-    margin: 30px auto;
+    margin: 40px auto;
     padding: 20px;
-    background-color: var(--bg-card-color);
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    min-height: calc(100vh - 200px); /* Ajuste para centralizar visualmente se pouco conteúdo */
 }
 
-.crud-page-container h1 {
-    text-align: center;
-    color: var(--text-color);
-    margin-bottom: 30px;
-    font-size: 2.2em;
-}
-
-.crud-page-container h2 {
-    color: var(--text-light-color);
-    margin-top: 30px;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid #eee;
-    font-size: 1.6em;
-}
-
-/* --- ESTILOS DO FORMULÁRIO --- */
-.form-card {
-    background-color: #fdfdfd;
-    padding: 25px;
-    border-radius: 8px;
-    border: 1px solid var(--border-light-color);
-    margin-bottom: 30px;
-}
-
-#form-veiculo .form-group {
-    margin-bottom: 15px;
-}
-
-/* Grid para organizar campos menores em colunas */
-#form-veiculo .form-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
-}
-
-#form-veiculo label {
-    display: block;
-    margin-bottom: 6px;
-    font-weight: 600;
-    color: var(--text-light-color);
-    font-size: 0.9em;
-}
-
-#form-veiculo input[type="text"],
-#form-veiculo input[type="number"],
-#form-veiculo input[type="search"],
-#form-veiculo select,
-#form-veiculo textarea {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    font-size: 1em;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-/* Foco visível para acessibilidade (navegação por teclado) */
-#form-veiculo input:focus-visible,
-#form-veiculo select:focus-visible,
-#form-veiculo textarea:focus-visible {
-    border-color: var(--primary-color);
-    outline: none;
-    box-shadow: 0 0 0 3px var(--focus-shadow-color);
-}
-
-#form-veiculo .checkbox-group {
-    display: flex;
-    align-items: center;
-}
-#form-veiculo input[type="checkbox"] {
-    width: 1.2em;
-    height: 1.2em;
-    margin-right: 8px;
-}
-
-
-.form-actions {
-    margin-top: 25px;
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-}
-
-.form-actions button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
+/* --- TÍTULOS --- */
+h1, h2, h3 {
+    color: var(--primary-color);
     font-weight: bold;
-    transition: background-color 0.2s ease, transform 0.1s ease;
-}
-.form-actions button:active {
-    transform: scale(0.98);
-}
-
-.form-actions button[type="submit"] {
-    background-color: var(--success-color);
-    color: white;
-}
-.form-actions button[type="submit"]:hover {
-    background-color: var(--success-hover-color);
-}
-.form-actions button[type="submit"]:disabled {
-    background-color: var(--success-hover-color);
-    opacity: 0.7;
-    cursor: wait;
-}
-
-.form-actions .button-secondary {
-    background-color: var(--secondary-color);
-    color: white;
-}
-.form-actions .button-secondary:hover {
-    background-color: var(--secondary-hover-color);
-}
-
-/* --- ESTILOS DA TABELA DE VEÍCULOS --- */
-#search-veiculo-input {
-    max-width: 400px;
-    margin-bottom: 15px;
-    padding: 10px 12px;
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    font-size: 1em;
-}
-
-.table-responsive {
-    overflow-x: auto;
-}
-
-#tabela-veiculos {
-    width: 100%;
-    border-collapse: collapse;
+    letter-spacing: -0.5px;
     margin-bottom: 20px;
 }
 
-#tabela-veiculos th,
-#tabela-veiculos td {
-    border: 1px solid var(--border-light-color);
+h1 {
+    text-align: center;
+    font-size: 2.2rem;
+    margin-bottom: 40px;
+    text-transform: uppercase; /* Estilo Imperial */
+}
+
+h2 {
+    font-size: 1.5rem;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+/* --- CARD (LOGIN, CADASTRO, FORMULÁRIO) --- */
+.form-card {
+    background-color: var(--card-bg);
+    padding: 40px;
+    border-radius: 8px; /* Bordas levemente arredondadas como os cards de serviço */
+    box-shadow: var(--shadow-card);
+    border: 1px solid #eee;
+    margin-bottom: 30px;
+}
+
+/* Centralização específica para Login/Cadastro */
+main[style*="max-width: 450px"] .form-card {
+    border-top: 4px solid var(--primary-color); /* Detalhe elegante no topo */
+}
+
+/* --- INPUTS E FORMULÁRIOS --- */
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="search"],
+select,
+textarea {
+    width: 100%;
     padding: 12px 15px;
-    text-align: left;
-    font-size: 0.9em;
-    vertical-align: middle;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9; /* Fundo levemente cinza nos inputs */
+    border-radius: 4px; /* Bordas mais quadradas combinam com o site */
+    font-size: 1rem;
+    color: var(--text-main);
+    transition: all 0.3s ease;
 }
 
-#tabela-veiculos thead th {
-    background-color: var(--dark-color);
-    color: white;
-    font-weight: 600;
-    position: sticky;
-    top: 0;
+/* Foco estilo "Imperial" (Preto) */
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    background-color: #fff;
+    border-color: #000; /* Borda preta ao focar */
+    box-shadow: 0 0 0 1px #000;
 }
 
-#tabela-veiculos tbody tr:nth-child(even) {
-    background-color: var(--bg-zebra-color);
+/* --- BOTÕES (Igual aos botões .monte-botao do site) --- */
+.form-actions {
+    margin-top: 30px;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end; /* Alinha à direita no CRUD */
 }
 
-#tabela-veiculos tbody tr:hover {
-    background-color: #e9ecef;
+/* Centraliza botões no login */
+main[style*="max-width: 450px"] .form-actions {
+    justify-content: center;
 }
 
-#tabela-veiculos .edit-btn,
-#tabela-veiculos .delete-btn {
-    padding: 6px 10px;
+button {
+    padding: 12px 25px;
+    background-color: #000; /* Preto total */
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    margin-right: 5px;
-    color: white;
-    transition: opacity 0.2s ease;
+    transition: background-color 0.3s ease, transform 0.1s;
+    text-transform: uppercase;
 }
-#tabela-veiculos .edit-btn:hover,
-#tabela-veiculos .delete-btn:hover {
-    opacity: 0.85;
+
+button:hover {
+    background-color: #333; /* Cinza escuro no hover */
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+button:disabled {
+    background-color: #777;
+    cursor: not-allowed;
+}
+
+/* Botões Secundários (Limpar/Cancelar) */
+.button-secondary {
+    background-color: transparent;
+    border: 1px solid #000;
+    color: #000;
+}
+
+.button-secondary:hover {
+    background-color: #f0f0f0;
+    color: #000;
+}
+
+/* --- TABELA (CRUD) --- */
+.table-responsive {
+    overflow-x: auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: var(--shadow-card);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead th {
+    background-color: #000; /* Cabeçalho Preto */
+    color: #fff;
+    padding: 15px;
+    text-align: left;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+
+tbody td {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    color: #333;
+}
+
+tbody tr:hover {
+    background-color: #f9f9f9; /* Hover suave nas linhas */
+}
+
+/* Botões dentro da tabela */
+.edit-btn, .delete-btn {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    margin-right: 5px;
+    text-transform: none; /* Botões pequenos não precisam ser uppercase */
 }
 
 .edit-btn {
-    background-color: var(--warning-color);
-    color: var(--dark-color);
+    background-color: var(--secondary-color); /* Cinza escuro */
 }
 
 .delete-btn {
-    background-color: var(--danger-color);
+    background-color: var(--danger-color); /* Vermelho (exceção para perigo) */
 }
 
-/* --- COMPONENTES DINÂMICOS (JS) --- */
-/* Estilos para Notificações (Toast) */
-.notification {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    padding: 15px 25px;
-    border-radius: 8px;
-    color: #fff;
-    font-size: 1rem;
-    font-weight: 500;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    transform: translateY(150%);
-    opacity: 0;
-    transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
-    z-index: 1000;
-}
-
-.notification.show {
-    transform: translateY(0);
-    opacity: 1;
-}
-
-.notification.success { background-color: var(--success-color); }
-.notification.error { background-color: var(--danger-color); }
-
-/* Estilos para Status na Tabela */
-.status {
-    padding: 4px 10px;
-    border-radius: 12px;
-    font-weight: bold;
-    font-size: 0.8em;
-    color: #fff;
-    text-transform: uppercase;
-}
-.status.disponivel { background-color: var(--success-color); }
-.status.indisponivel { background-color: var(--secondary-color); }
-
-td.error {
-    color: var(--danger-color);
-    font-weight: bold;
-    text-align: center !important;
-}
-
-/* --- RESPONSIVIDADE --- */
-@media (max-width: 768px) {
-    .crud-page-container {
-        margin: 15px;
-        padding: 15px;
-    }
-    .crud-page-container h1 { font-size: 1.8em; }
-    .crud-page-container h2 { font-size: 1.4em; }
-
-    .form-actions {
-        flex-direction: column;
-    }
-    .form-actions button {
-        width: 100%;
-    }
-}
-
-
-/* --- Estilos para Busca Avançada --- */
+/* --- FILTROS DE BUSCA --- */
 .search-filters-container {
-    display: flex;
-    flex-wrap: wrap; /* Permite que os itens quebrem para a linha de baixo em telas pequenas */
-    gap: 10px; /* Espaçamento entre os campos */
-    padding: 15px;
-    background-color: #f8f9fa;
-    border: 1px solid #dee2e6;
+    background-color: #fff;
+    padding: 20px;
     border-radius: 8px;
-    margin-bottom: 20px;
+    box-shadow: var(--shadow-card);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 25px;
+    align-items: center;
 }
 
 .search-filters-container input,
 .search-filters-container select {
-    flex: 1 1 180px; /* Flex-grow, flex-shrink, flex-basis */
-    padding: 8px 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 0.9em;
+    flex: 1 1 200px; /* Responsivo */
 }
 
-.search-filters-container button {
-    flex-basis: 150px; /* Largura base do botão */
-    padding: 8px 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+/* --- MENSAGENS E UTILITÁRIOS --- */
+.form-footer {
+    margin-top: 25px;
+    text-align: center;
+    font-size: 0.9rem;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+.form-footer a {
+    color: #000;
     font-weight: bold;
-    transition: background-color 0.2s ease;
+    text-decoration: none;
 }
 
-/* EM crud_styles.css */
-
-/* --- ESTILOS PARA UPLOAD DE IMAGEM --- */
-#form-veiculo input[type="file"] {
-    display: block;
-    margin-bottom: 10px;
+.form-footer a:hover {
+    text-decoration: underline;
 }
 
-.image-preview-container {
-    width: 100%;
-    max-width: 300px;
-    height: 200px;
-    border: 2px dashed #ccc;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-    background-color: #f9f9f9;
-}
-
-.image-preview {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Garante que a imagem cubra o espaço */
-    display: none; /* Começa escondida */
-}
-
-#image-preview-text {
-    color: #888;
+.error-message, .success-message {
+    padding: 12px;
+    border-radius: 4px;
+    margin-top: 20px;
+    font-size: 0.9rem;
+    text-align: center;
     font-weight: bold;
+}
+
+.error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.success-message {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+/* Status na tabela */
+.status {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.status.disponivel {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+.status.indisponivel {
+    background-color: #e2e3e5;
+    color: #383d41;
+    border: 1px solid #d6d8db;
 }
 
 .hidden {
-    display: none;
+    display: none !important;
+}
+
+/* --- GRID DE FORMULÁRIO (Igual anterior, para layout) --- */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.checkbox-group input {
+    width: auto;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    .form-card {
+        padding: 20px;
+    }
+    .crud-page-container {
+        padding: 10px;
+        margin-top: 20px;
+    }
 }

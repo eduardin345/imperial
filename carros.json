@@ -3,7 +3,7 @@
     "modelo": "JETTA GLI",
     "marca": "Volkswagen", 
     "categoria": "carros",
-    "imagem": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/2022_Volkswagen_Jetta_GLI_2.0_s.jpg/1200px-2022_Volkswagen_Jetta_GLI_2.0_s.jpg",
+    "imagem": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/2022_Volkswagen_Jetta_GLI_2.0_s.jpg/800px-2022_Volkswagen_Jetta_GLI_2.0_s.jpg",
     "destaque_modelo": true,
     "preco": "R$ 239.990",
     "ano": 2023,
@@ -15,7 +15,7 @@
   {
     "modelo": "COROLLA ALTIS HYBRID",
     "marca": "Toyota",
-    "imagem": "https://upload.wikimedia.org/wikipedia/commons/6/63/2020_Toyota_Corolla_Altis_1.6_G_%28Philippines%29.jpg",
+    "imagem": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/2020_Toyota_Corolla_Altis_Hybrid_%28Philippines%29.jpg/800px-2020_Toyota_Corolla_Altis_Hybrid_%28Philippines%29.jpg",
     "categoria": "carros",
     "destaque_modelo": true,
     "preco": "R$ 198.990",
@@ -28,7 +28,7 @@
   {
     "modelo": "FORD EVEREST",
     "marca": "Ford",
-    "imagem": "https://upload.wikimedia.org/wikipedia/commons/f/fc/2022_Ford_Everest_Sport_%28Thailand%29_front_view.jpg",
+    "imagem": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/2022_Ford_Everest_Sport_V6_%28Thailand%29_front_view_01.jpg/800px-2022_Ford_Everest_Sport_V6_%28Thailand%29_front_view_01.jpg",
     "categoria": "suvs",
     "destaque_modelo": true,
     "preco": "R$ 415.500",
@@ -41,7 +41,7 @@
   {
     "modelo": "CIVIC G10 TOURING",
     "marca": "Honda",
-    "imagem": "https://upload.wikimedia.org/wikipedia/commons/f/f6/2016_Honda_Civic_Touring_1.5L_front_5.23.18.jpg",
+    "imagem": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/2017_Honda_Civic_Si_Coupe_%28FC3%29%2C_front_11.17.19.jpg/800px-2017_Honda_Civic_Si_Coupe_%28FC3%29%2C_front_11.17.19.jpg",
     "categoria": "carros",
     "destaque_modelo": true,
     "preco": "R$ 152.000",
@@ -54,7 +54,7 @@
   {
     "modelo": "MINI COOPER S",
     "marca": "Mini",
-    "imagem": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Mini_Cooper_S_5-Door_%28F55%29_%E2%80%93_Frontansicht%2C_28._Februar_2015%2C_D%C3%BCsseldorf.jpg/1200px-Mini_Cooper_S_5-Door_%28F55%29_%E2%80%93_Frontansicht%2C_28._Februar_2015%2C_D%C3%BCsseldorf.jpg",
+    "imagem": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Mini_Cooper_S_%28F56%29_%E2%80%93_Frontansicht%2C_12._April_2014%2C_D%C3%BCsseldorf.jpg/800px-Mini_Cooper_S_%28F56%29_%E2%80%93_Frontansicht%2C_12._April_2014%2C_D%C3%BCsseldorf.jpg",
     "categoria": "esportivos",
     "destaque_modelo": true,
     "preco": "R$ 212.990",
@@ -67,7 +67,7 @@
   {
     "modelo": "GWM HAVAL H6 PHEV",
     "marca": "GWM",
-    "imagem": "https://upload.wikimedia.org/wikipedia/commons/d/de/Haval_H6_S_PHEV_IAA_2021_1X7A0064.jpg",
+    "imagem": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Haval_H6_S_PHEV_IAA_2021_1X7A0064.jpg/800px-Haval_H6_S_PHEV_IAA_2021_1X7A0064.jpg",
     "categoria": "suvs",
     "destaque_modelo": true,
     "preco": "R$ 279.000",
@@ -80,7 +80,7 @@
   {
     "modelo": "Lamborghini Huracan",
     "marca": "Lamborghini",
-    "imagem": "https://upload.wikimedia.org/wikipedia/commons/e/e5/2014-03-04_Geneva_Motor_Show_1379.JPG",
+    "imagem": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/2014-03-04_Geneva_Motor_Show_1379.JPG/800px-2014-03-04_Geneva_Motor_Show_1379.JPG",
     "categoria": "esportivos",
     "destaque_modelo": false,
     "preco": "R$ 3.800.000",
@@ -93,7 +93,7 @@
   {
     "modelo": "BMW M4 COMPETITION",
     "marca": "BMW",
-    "imagem": "https://upload.wikimedia.org/wikipedia/commons/1/1a/BMW_G82_IAA_2021_1X7A0086.jpg",
+    "imagem": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/BMW_G82_IAA_2021_1X7A0086.jpg/800px-BMW_G82_IAA_2021_1X7A0086.jpg",
     "categoria": "esportivos",
     "destaque_modelo": false,
     "preco": "R$ 829.950",
@@ -106,7 +106,7 @@
   {
     "modelo": "BMW X7 M60i",
     "marca": "BMW",
-    "imagem": "https://upload.wikimedia.org/wikipedia/commons/a/af/2020_BMW_X7_M50i_Front.jpg",
+    "imagem": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/2019_BMW_X7_xDrive40i_Front.jpg/800px-2019_BMW_X7_xDrive40i_Front.jpg",
     "categoria": "suvs",
     "destaque_modelo": false,
     "preco": "R$ 1.154.950",
@@ -119,7 +119,7 @@
   {
     "modelo": "MERCEDES-BENZ GLE COUPE",
     "marca": "Mercedes",
-    "imagem": "https://upload.wikimedia.org/wikipedia/commons/a/aa/Mercedes-Benz_C292_GLE_400_Coupe_AMG_Line_Frontansicht_Diamantsilber.jpg",
+    "imagem": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Mercedes-Benz_C_167_Mondial_de_l%E2%80%99Auto_2024_1X7A0766.jpg/800px-Mercedes-Benz_C_167_Mondial_de_l%E2%80%99Auto_2024_1X7A0766.jpg",
     "categoria": "suvs",
     "destaque_modelo": false,
     "preco": "R$ 755.000",
@@ -132,7 +132,7 @@
   {
     "modelo": "FORD F-150 RAPTOR",
     "marca": "Ford",
-    "imagem": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Ford_F-150_Raptor_Gen3_img10.jpg/1200px-Ford_F-150_Raptor_Gen3_img10.jpg",
+    "imagem": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Ford_F-150_Raptor_Gen3_img03.jpg/800px-Ford_F-150_Raptor_Gen3_img03.jpg",
     "categoria": "picape",
     "destaque_modelo": false,
     "preco": "R$ 519.990",
@@ -145,7 +145,7 @@
   {
     "modelo": "RAM 1500 TRX",
     "marca": "Ram",
-    "imagem": "https://upload.wikimedia.org/wikipedia/commons/f/fb/2021_Ram_1500_TRX%2C_front_10.22.21.jpg",
+    "imagem": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Ram_1500_TRX_%28restyling%29_%E2%80%93_Frontansicht%2C_10._April_2022%2C_D%C3%BCsseldorf.jpg/800px-Ram_1500_TRX_%28restyling%29_%E2%80%93_Frontansicht%2C_10._April_2022%2C_D%C3%BCsseldorf.jpg",
     "categoria": "picape",
     "destaque_modelo": false,
     "preco": "R$ 989.000",

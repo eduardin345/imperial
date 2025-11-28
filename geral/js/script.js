@@ -298,4 +298,59 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     }
+
+
+    
+    const token = localStorage.getItem('authToken');
+    const role = localStorage.getItem('userRole');
+
+    // Seletores do Menu
+    const adminLinkLi = document.getElementById('admin-link-li');
+    const loginLinkLi = document.getElementById('login-link-li');
+    const logoutLinkLi = document.getElementById('logout-link-li');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    // 1. Verifica se o usuário está logado
+    if (token) {
+        // --- USUÁRIO LOGADO ---
+        
+        // Esconde o botão "Entrar"
+        if (loginLinkLi) loginLinkLi.style.display = 'none';
+        
+        // Mostra o botão "Sair"
+        if (logoutLinkLi) logoutLinkLi.style.display = 'block';
+
+        // Verifica se é ADMIN para mostrar o link do CRUD
+        if (role === 'admin') {
+            if (adminLinkLi) adminLinkLi.style.display = 'block';
+        } else {
+            // Se for usuário comum, garante que o link do CRUD fique escondido
+            if (adminLinkLi) adminLinkLi.style.display = 'none';
+        }
+    } else {
+        // --- USUÁRIO NÃO LOGADO (VISITANTE) ---
+        
+        // Garante estado inicial
+        if (loginLinkLi) loginLinkLi.style.display = 'block';
+        if (logoutLinkLi) logoutLinkLi.style.display = 'none';
+        if (adminLinkLi) adminLinkLi.style.display = 'none';
+    }
+
+    // 2. Ação do Botão SAIR (Logout)
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // Confirmação opcional (pode remover se não quiser)
+            if(confirm("Deseja realmente sair da sua conta?")) {
+                // Remove os dados do navegador
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('userRole');
+                
+                // Recarrega a página para atualizar o menu
+                window.location.reload();
+            }
+        });
+    }
+
 });

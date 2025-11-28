@@ -7,26 +7,22 @@ import path from 'path';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { fileURLToPath } from 'url';
+import fs from 'fs'; // Importando FS para mexer com pastas
 
 // 1. CONFIGURAÇÕES INICIAIS
 dotenv.config();
 const app = express();
-const PORT = process.env.PORT || 3002; // Porta do servidor (Front deve chamar 3002)
+const PORT = process.env.PORT || 3002;
 
-// Configuração de diretórios para ES Modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Middlewares Globais
-app.use(cors()); // Permite acesso do Frontend
-app.use(express.json()); // Permite ler JSON no corpo da requisição
-
-// Configuração de Pastas Estáticas (Imagens)
-// Permite que http://localhost:3002/uploads/vehicles/foto.jpg funcione
+app.use(cors());
+app.use(express.json());
 app.use(express.static('public'));
 app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
-// 2. CONEXÃO COM BANCO DE DADOS
+// 2. CONEXÃO BANCO (Mantenha o código de conexão aqui...)
 const pool = mysql.createPool({
     host: process.env.DB_HOST || 'localhost',
     user: process.env.DB_USER || 'root',
@@ -37,29 +33,27 @@ const pool = mysql.createPool({
     queueLimit: 0
 });
 
-// Teste de conexão ao iniciar
-pool.getConnection()
-    .then(conn => {
-        console.log('✅ Banco de Dados: Conectado com sucesso!');
-        conn.release();
-    })
-    .catch(err => {
-        console.error('❌ Banco de Dados: Falha na conexão.', err.message);
-    });
+// 3. SISTEMA DE UPLOAD (CRIA PASTAS AUTOMATICAMENTE AGORA)
+const uploadDir = path.join(__dirname, 'public/uploads/vehicles');
 
-// 3. SISTEMA DE UPLOAD (MULTER)
+// Se a pasta não existir, o servidor cria agora!
+if (!fs.existsSync(uploadDir)){
+    fs.mkdirSync(uploadDir, { recursive: true });
+    console.log(`📂 Pasta Criada Automaticamente: ${uploadDir}`);
+}
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        // Assegure-se de que a pasta public/uploads/vehicles existe
-        cb(null, 'public/uploads/vehicles/'); 
+        cb(null, uploadDir); 
     },
     filename: (req, file, cb) => {
-        // Nome único: campo + timestamp + numero random + extensão
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
         cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
     }
 });
 const upload = multer({ storage: storage });
+
+// ... (Mantenha o resto do arquivo server.js igual: middlewares, rotas, etc) ...
 
 // 4. MIDDLEWARES DE SEGURANÇA
 
@@ -91,19 +85,53 @@ const verifyAdmin = (req, res, next) => {
 
 app.post('/api/auth/registrar', async (req, res) => {
     const { nome_completo, email, senha } = req.body;
-    try {
-        const [exists] = await pool.query('SELECT email FROM usuarios WHERE email = ?', [email]);
-        if (exists.length > 0) return res.status(400).json({ error: 'Email já cadastrado.' });
+    
+    // Validação básica
+    if (!nome_completo || !email || !senha) {
+        return res.status(400).json({ error: 'Todos os campos são obrigatórios.' });
+    }
 
+    const connection = await pool.getConnection(); // Pega uma conexão para fazer a transação
+
+    try {
+        await connection.beginTransaction(); // Inicia uma transação
+
+        // --- LÓGICA PRINCIPAL ---
+        // 1. Verifica se já existe algum usuário no banco
+        const [userCountResult] = await connection.query('SELECT COUNT(*) as total FROM usuarios');
+        const isFirstUser = userCountResult[0].total === 0;
+
+        // 2. Define a 'role' baseada no resultado
+        const role = isFirstUser ? 'admin' : 'user';
+
+        // 3. Verifica se o email específico já está cadastrado
+        const [existing] = await connection.query('SELECT email FROM usuarios WHERE email = ?', [email]);
+        if (existing.length > 0) {
+            await connection.rollback(); // Cancela a transação
+            return res.status(409).json({ error: 'Este email já está cadastrado.' }); // 409 Conflict
+        }
+
+        // 4. Criptografa a senha
         const hash = await bcrypt.hash(senha, 10);
-        // Define 'role' como 'user' por padrão para segurança. Mude no banco para 'admin' manualmente.
-        await pool.query('INSERT INTO usuarios (nome_completo, email, senha, role) VALUES (?, ?, ?, ?)', 
-            [nome_completo, email, hash, 'user']);
-            
-        res.status(201).json({ message: 'Conta criada com sucesso!' });
+        
+        // 5. Insere o novo usuário COM a role definida
+        await connection.query(
+            'INSERT INTO usuarios (nome_completo, email, senha, role) VALUES (?, ?, ?, ?)', 
+            [nome_completo, email, hash, role]
+        );
+        
+        await connection.commit(); // Confirma a transação
+
+        res.status(201).json({ 
+            message: `Usuário criado com sucesso! Sua permissão é: ${role}.` 
+        });
+
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Erro ao registrar usuário.' });
+        await connection.rollback(); // Cancela a transação em caso de erro
+        console.error('Erro no registro:', err);
+        res.status(500).json({ error: 'Erro ao criar a conta.' });
+    } finally {
+        connection.release(); // Sempre libera a conexão de volta para o pool
     }
 });
 
