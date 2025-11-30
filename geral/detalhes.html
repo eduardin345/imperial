@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Veículo | IMPERIAL</title>
+    <link rel="stylesheet" href="css/css.css">
+    <link rel="stylesheet" href="css/detalhes.css"> <!-- Novo CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="site-header">
+        <div class="header-right-content" style="margin-left: 20px;">
+            <div class="imperial" style="color:white;">IMPERIAL</div>
+        </div>
+        <nav class="main-navigation">
+            <ul>
+                <li><a href="index.html">Início</a></li>
+                <li><a href="comprar.html">Voltar para Estoque</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="details-container">
+        
+        <!-- LOADING (Esqueleto) -->
+        <div id="loading-screen">
+            <i class="fas fa-circle-notch fa-spin"></i> Carregando detalhes...
+        </div>
+
+        <!-- CONTEÚDO DO CARRO (Inicialmente oculto) -->
+        <div id="car-content" class="content-wrapper" style="display: none;">
+            
+            <!-- COLUNA DA ESQUERDA (FOTOS + INFO) -->
+            <div class="left-column">
+                
+                <!-- Galeria de Imagem -->
+                <div class="image-gallery">
+                    <span id="detail-badge" class="detail-badge">NOVO</span>
+                    <img id="main-img" src="" alt="Carro" class="main-photo">
+                    <div class="photo-label"><i class="fas fa-camera"></i> Ver todas as fotos</div>
+                </div>
+
+                <!-- Títulos e Infos Básicas -->
+                <div class="car-header-info">
+                    <div class="brand-model">
+                        <span id="detail-brand">MARCA</span>
+                        <h1 id="detail-model">Modelo do Carro</h1>
+                    </div>
+                    <h3 id="detail-version">Versão e Detalhes do Motor</h3>
+                    
+                    <div class="basic-specs">
+                        <span><i class="far fa-calendar"></i> <b id="detail-year">2024</b></span>
+                        <span><i class="fas fa-tachometer-alt"></i> <b id="detail-km">0 km</b></span>
+                        <span><i class="fas fa-gas-pump"></i> <b id="detail-motor">2.0</b></span>
+                        <span><i class="fas fa-palette"></i> <b id="detail-color">Cor</b></span>
+                    </div>
+                </div>
+
+                <!-- Descrição / Sobre -->
+                <div class="description-box">
+                    <h3>Sobre este veículo</h3>
+                    <p id="detail-desc">Carregando descrição...</p>
+                </div>
+
+                <!-- Ficha Técnica -->
+                <div class="full-specs">
+                    <h3>Ficha Técnica</h3>
+                    <div class="specs-grid">
+                        <div class="spec-row"><span>Carroceria</span> <strong>SUV/Sedan</strong></div>
+                        <div class="spec-row"><span>Portas</span> <strong>4 Portas</strong></div>
+                        <div class="spec-row"><span>Câmbio</span> <strong>Automático</strong></div>
+                        <div class="spec-row"><span>Final da Placa</span> <strong>7</strong></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COLUNA DA DIREITA (BOX DE COMPRA / STICKY) -->
+            <div class="right-column">
+                <div class="purchase-card">
+                    <span class="price-label">Preço à vista</span>
+                    <h2 id="detail-price">R$ 0,00</h2>
+                    
+                    <div class="seller-actions">
+                        <a href="#" id="btn-whatsapp" target="_blank" class="btn-cta whatsapp">
+                            <div class="icon-box"><i class="fab fa-whatsapp"></i></div>
+                            <div class="text-box">
+                                <span>Enviar mensagem</span>
+                                <small>Negociar pelo WhatsApp</small>
+                            </div>
+                        </a>
+                        
+                        <div class="phones">
+                            <div><i class="fas fa-phone"></i> (11) 99999-9999</div>
+                        </div>
+
+                       
+                        <button class="btn-cta outline">
+                            <i class="fas fa-share-alt"></i> Compartilhar
+                        </button>
+                    </div>
+
+                    <div class="location-info">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Imperial Motors - São Paulo, SP</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="js/detalhes.js"></script>
+</body>
+</html>

@@ -378,3 +378,176 @@ body {
     0% { background-position: 200% 0; }
     100% { background-position: -200% 0; }
 }
+
+/* =========================================
+   SIDEBAR DE FILTROS (PREMIUM DESIGN)
+   ========================================= */
+
+#filtros-sidebar {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px; /* Cantos mais arredondados */
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08); /* Sombra elegante e suave */
+    border: 1px solid #f0f0f0;
+    align-self: start; /* Garante que fique no topo se a grid for longa */
+    position: sticky;
+    top: 20px; /* Se a tela for grande, acompanha o scroll */
+}
+
+/* Cabeçalho da Sidebar (Correção do botão sobreposto) */
+#filtros-sidebar > div:first-child { 
+    /* Esse seletor pega a div que segura o Título e o Botão */
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+#filtros-sidebar h2 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #111;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+}
+
+/* Botão Limpar (Estilo Ghost Button) */
+#limpar-filtros-btn {
+    background: transparent;
+    color: #666;
+    border: 1px solid #ddd;
+    padding: 6px 16px;
+    font-size: 0.8rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+#limpar-filtros-btn:hover {
+    background: #111;
+    color: #fff;
+    border-color: #111;
+    transform: translateY(-1px);
+}
+
+/* --- Grupos de Filtro --- */
+.filtro-grupo {
+    margin-bottom: 30px;
+}
+
+.filtro-grupo label {
+    display: block;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #333;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Selects (Dropdowns) Modernos */
+.filtro-grupo select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #eee;
+    border-radius: 8px;
+    background-color: #fbfbfb;
+    font-size: 0.95rem;
+    color: #444;
+    font-weight: 500;
+    outline: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    appearance: none; /* Remove seta padrão do navegador */
+    /* Seta Customizada */
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23333%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.8-9.2-5.4-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px top 50%;
+    background-size: 12px auto;
+}
+
+.filtro-grupo select:hover {
+    border-color: #ccc;
+}
+.filtro-grupo select:focus {
+    border-color: #111;
+    background-color: #fff;
+}
+
+/* Radio Buttons (Bolinhas de seleção) */
+.radio-group label {
+    display: flex;
+    align-items: center;
+    font-weight: normal;
+    margin-bottom: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    text-transform: none; /* Volta ao normal para os itens */
+    color: #555;
+    transition: color 0.2s;
+}
+
+.radio-group label:hover {
+    color: #000;
+}
+
+.radio-group input[type="radio"] {
+    accent-color: #111; /* Deixa a bolinha preta quando selecionada */
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+/* Slider de Preço */
+input[type=range] {
+    -webkit-appearance: none; /* Reseta estilo padrão */
+    width: 100%;
+    background: transparent;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+}
+
+input[type=range]:focus {
+    outline: none;
+}
+
+/* Trilha do Slider */
+input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 6px;
+    cursor: pointer;
+    background: #e0e0e0;
+    border-radius: 3px;
+}
+
+/* Bolinha do Slider */
+input[type=range]::-webkit-slider-thumb {
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: #111;
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -7px; /* Centraliza na trilha */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: transform 0.1s;
+}
+
+input[type=range]::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+/* Texto do Preço */
+#preco-valor {
+    color: #111;
+    font-size: 1rem;
+    font-weight: 800;
+}

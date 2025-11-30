@@ -4,33 +4,68 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Comprar Veículos - IMPERIAL</title>
-  <link rel="stylesheet" href="css/css.css"> <!-- Seu CSS principal -->
-  <link rel="stylesheet" href="css/comprar_styles.css"> <!-- NOVO CSS para esta página -->
+  
+  <!-- Importação de Fontes e Ícones -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/css.css"> <!-- CSS Principal (Header/Footer) -->
+  <link rel="stylesheet" href="css/comprar_styles.css"> <!-- CSS Específico desta página -->
 </head>
 <body>
 
-  <!-- SEU HEADER (copiado do index.html para manter a consistência) -->
+  <!-- ======================================================= -->
+  <!-- CABEÇALHO (Igual ao da Página Inicial para funcionar o Login) -->
+  <!-- ======================================================= -->
   <header class="site-header">
-    <button class="menu-toggle" id="menu-toggle-button" aria-label="Abrir menu principal" aria-expanded="false" aria-controls="main-menu">
+    <button class="menu-toggle" id="menu-toggle-button" aria-label="Abrir menu principal">
       <span class="hamburger-icon" aria-hidden="true"><span></span><span></span><span></span></span>
     </button>
+
+    <!-- Navegação Idêntica à Home (Para o script.js controlar o login/logout) -->
     <nav class="main-navigation" id="main-menu" aria-hidden="true">
+        <button class="menu-close" aria-label="Fechar menu principal">×</button>
         <ul>
-            <li><a href="index.html">Inicio</a></li> <!-- Link atualizado -->
-            <li><a href="login.html">Minha Conta</a></li>
+            <li><a href="index.html">Início</a></li>
+            
+            <!-- Link Admin: Invisível por padrão, o script.js mostra se for admin -->
+            <li id="admin-link-li" style="display: none;">
+                <a href="crud_veiculos.html">Gerenciar Veículos</a>
+            </li>
+            
+            <li><a href="comprar.html" class="active">Comprar</a></li>
+
+            <!-- Link de Login: Aparece se NÃO estiver logado -->
+            <li id="login-link-li">
+                <a href="login.html">Entrar / Cadastrar</a>
+            </li>
+
+            <!-- Link de Logout: Aparece se ESTIVER logado -->
+            <li id="logout-link-li" style="display: none;">
+                <a href="#" id="logout-btn" style="color: #dc3545; font-weight: bold;">Sair</a>
+            </li>
         </ul>
     </nav>
+
+    <!-- Barra de Busca do Topo -->
     <div class="search-container">
         <button type="button" class="search-button" aria-label="Iniciar busca">🔍</button>
         <input type="search" id="site-search" name="q" placeholder="Buscar..." aria-label="Campo de busca">
     </div>
+
+    <!-- Logo Imperial (Forçado Branco conforme solicitado) -->
     <div class="header-right-content">
-        <div class="imperial">IMPERIAL</div>
+        <div class="imperial" style="color: #ffffff !important;">IMPERIAL</div>
     </div>
+
+    <div class="overlay" id="sidebar-overlay" aria-hidden="true"></div>
     <div class="overlay" aria-hidden="true"></div>
   </header>
 
+  <!-- ======================================================= -->
+  <!-- CONTEÚDO PRINCIPAL (Hero + Filtros + Grid)              -->
+  <!-- ======================================================= -->
   <main class="comprar-page">
+    
+    <!-- Banner do Topo -->
     <section class="page-hero">
       <div class="hero-content">
         <h1>Encontre o Carro dos Seus Sonhos</h1>
@@ -39,49 +74,68 @@
     </section>
 
     <div class="page-layout">
-      <!-- ===== BARRA LATERAL DE FILTROS ===== -->
+      
+      <!-- Barra Lateral de Filtros -->
       <aside id="filtros-sidebar">
-        <h2>Filtros</h2>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h2 style="margin: 0;">Filtros</h2>
+            <button id="limpar-filtros-btn" style="font-size: 0.8em; padding: 5px 10px;">Limpar</button>
+        </div>
+
+        <!-- Filtro de Marca -->
         <div class="filtro-grupo">
           <label for="filtro-marca">Marca</label>
           <select id="filtro-marca" name="marca">
             <option value="todas">Todas as Marcas</option>
-            <!-- Opções serão preenchidas pelo JavaScript -->
+            <!-- Javascript preenche aqui -->
           </select>
         </div>
+
+        <!-- Filtro de Categoria -->
         <div class="filtro-grupo">
           <label for="filtro-categoria">Categoria</label>
           <select id="filtro-categoria" name="categoria">
             <option value="todas">Todas as Categorias</option>
-             <!-- Opções serão preenchidas pelo JavaScript -->
+            <!-- Javascript preenche aqui -->
           </select>
         </div>
+
+        <!-- Filtro de Condição -->
         <div class="filtro-grupo">
-          <label for="filtro-condicao">Condição</label>
-          <div class="radio-group">
-            <input type="radio" id="cond-todas" name="condicao" value="todas" checked>
-            <label for="cond-todas">Todas</label>
-            <input type="radio" id="cond-novos" name="condicao" value="novo">
-            <label for="cond-novos">Novos</label>
-            <input type="radio" id="cond-usados" name="condicao" value="usado">
-            <label for="cond-usados">Usados</label>
+          <label>Condição</label>
+          <div class="radio-group" style="display: flex; gap: 10px; margin-top: 5px;">
+            <label><input type="radio" id="cond-todas" name="condicao" value="todas" checked> Todos</label>
+            <label><input type="radio" id="cond-novos" name="condicao" value="novo"> Novos (2024+)</label>
+          </div>
+          <div class="radio-group" style="margin-top: 5px;">
+            <label><input type="radio" id="cond-usados" name="condicao" value="usado"> Seminovos</label>
           </div>
         </div>
+
+        <!-- Filtro de Preço -->
         <div class="filtro-grupo">
           <label for="filtro-preco">Faixa de Preço</label>
-          <input type="range" id="filtro-preco" name="preco" min="50000" max="4000000" step="10000" value="4000000">
-          <span id="preco-valor">Até R$ 4.000.000</span>
+          <div style="display: flex; justify-content: space-between; font-size: 0.9em; margin-bottom: 5px;">
+              <span>Até:</span>
+              <strong id="preco-valor">Qualquer Valor</strong>
+          </div>
+          <input type="range" id="filtro-preco" name="preco" min="50000" max="4000000" step="50000" value="4000000" style="width: 100%;">
+          <div style="display: flex; justify-content: space-between; font-size: 0.8em; color: #666;">
+              <span>50k</span>
+              <span>4M+</span>
+          </div>
         </div>
-        <button id="limpar-filtros-btn">Limpar Filtros</button>
       </aside>
 
-      <!-- ===== ÁREA DE RESULTADOS DOS VEÍCULOS ===== -->
-      <section id="resultados-veiculos">
-        <div class="sorting-bar">
-          <span id="resultados-contagem"></span>
+      <!-- Grade de Resultados -->
+      <section id="resultados-veiculos" style="flex: 1;">
+        
+        <div class="sorting-bar" style="background: #fff; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+          <span id="resultados-contagem" style="font-weight: bold; color: #333;"><i class="fas fa-spinner fa-spin"></i> Carregando estoque...</span>
+          
           <div class="sort-controls">
-            <label for="ordenar-por">Ordenar por:</label>
-            <select id="ordenar-por" name="ordenar">
+            <label for="ordenar-por" style="margin-right: 10px;">Ordenar:</label>
+            <select id="ordenar-por" name="ordenar" style="padding: 5px;">
               <option value="relevancia">Relevância</option>
               <option value="preco-menor">Menor Preço</option>
               <option value="preco-maior">Maior Preço</option>
@@ -90,66 +144,57 @@
           </div>
         </div>
 
-        <div id="veiculos-grid" class="grid">
-          <!-- Os cards dos veículos serão inseridos aqui pelo JavaScript -->
+        <!-- O Javascript vai injetar os cards AQUI -->
+        <div id="veiculos-grid" class="grid"></div>
+
+        <!-- Botão Carregar Mais -->
+        <div class="load-more-container" style="text-align: center; margin-top: 30px;">
+          <button id="load-more-btn" style="display: none; padding: 12px 30px; background: white; border: 2px solid #000; font-weight: bold; cursor: pointer;">
+              Carregar Mais
+          </button>
         </div>
 
-        <div class="load-more-container">
-          <button id="load-more-btn" style="display: none;">Carregar Mais Veículos</button>
-        </div>
       </section>
     </div>
   </main>
 
   <!-- =============================== -->
-<!-- ===== RODAPÉ DO SITE ===== -->
-<!-- =============================== -->
-<footer class="site-footer">
-  <div class="footer-container">
-
-    <!-- Seção 1: Logo e Social -->
-    <div class="footer-col" id="footer-sobre">
-      <h3 class="footer-logo">IMPERIAL</h3>
-      <p>Sua jornada para o carro dos sonhos começa aqui. Qualidade, confiança e as melhores ofertas do mercado.</p>
-      <div class="social-links">
-        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+  <!-- RODAPÉ (Igual ao Home)          -->
+  <!-- =============================== -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-col" id="footer-sobre">
+        <h3 class="footer-logo">IMPERIAL</h3>
+        <p>Sua jornada para o carro dos sonhos começa aqui.</p>
+        <div class="social-links">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Navegação</h4>
+        <ul>
+          <li><a href="index.html">Início</a></li>
+          <li><a href="comprar.html">Comprar</a></li>
+          <li><a href="venda-carro.html">Vender</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contato</h4>
+        <ul>
+          <li><i class="fas fa-map-marker-alt"></i> Av. Principal, 123, SP</li>
+          <li><i class="fas fa-phone"></i> (11) 99999-8888</li>
+        </ul>
       </div>
     </div>
-
-    <!-- Seção 2: Links Rápidos -->
-    <div class="footer-col">
-      <h4>Links Rápidos</h4>
-      <ul>
-        <li><a href="index.html">Início</a></li>
-        <li><a href="comprar.html">Comprar</a></li>
-        <li><a href="venda-carro.html">Venda seu Carro</a></li>
-      </ul>
+    <div class="footer-bottom">
+      <p>&copy; 2024 IMPERIAL. Todos os direitos reservados.</p>
     </div>
+  </footer>
 
-    <!-- Seção 3: Veículos -->
-  
-
-    <!-- Seção 4: Contato -->
-    <div class="footer-col">
-      <h4>Contato</h4>
-      <ul>
-        <li><i class="fas fa-map-marker-alt"></i> Av. Principal, 123, Sua Cidade</li>
-        <li><i class="fas fa-phone"></i> (11) 99999-8888</li>
-        <li><i class="fas fa-envelope"></i> contato@imperial.com</li>
-      </ul>
-    </div>
-
-  </div>
-  <div class="footer-bottom">
-    <p>&copy; 2024 IMPERIAL. Todos os direitos reservados.</p>
-  </div>
-</footer>
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <script src="js/script.js"></script> <!-- Seu script principal para o header -->
-  <script src="js/comprar.js"></script> <!-- NOVO script para a funcionalidade da página -->
+  <!-- Scripts do Sistema -->
+  <script src="js/script.js"></script>
+  <script src="js/comprar.js"></script>
 </body>
 </html>
